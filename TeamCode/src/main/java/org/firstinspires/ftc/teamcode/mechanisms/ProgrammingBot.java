@@ -1,16 +1,18 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
-import com.arcrobotics.ftclib.drivebase.DifferentialDrive;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+@Config
 public class ProgrammingBot {
+    public static double SPEED_ADJUSTMENT = 0.5;
+    public static double TURN_ADJUSTMENT = 0.5;
     private DigitalChannel touchSensor;
     private DcMotor leftMotor;
     private DcMotor rightMotor;
-    private DifferentialDrive m_drive;
+
 
     public void init(HardwareMap hwMap){
         touchSensor = hwMap.get(DigitalChannel.class, "touch_sensor");
@@ -28,12 +30,12 @@ public class ProgrammingBot {
     }
 
     public void runArcadeDrive(double forwardSpeed, double turnSpeed){
-        double speedAdjustment = 0.5;
-        leftMotor.setPower(forwardSpeed*speedAdjustment-turnSpeed*speedAdjustment);
-        rightMotor.setPower(forwardSpeed*speedAdjustment+turnSpeed*speedAdjustment);
+        leftMotor.setPower(forwardSpeed*SPEED_ADJUSTMENT-turnSpeed*TURN_ADJUSTMENT);
+        rightMotor.setPower(forwardSpeed*SPEED_ADJUSTMENT+turnSpeed*TURN_ADJUSTMENT);
     }
     public void runTankDrive(double leftSpeed, double rightSpeed){
         leftMotor.setPower(leftSpeed);
         rightMotor.setPower(rightSpeed);
     }
+
 }
