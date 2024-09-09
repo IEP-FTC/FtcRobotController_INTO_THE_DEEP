@@ -34,8 +34,8 @@ public class ProgrammingBot {
         rightMotor.setPower(forwardSpeed*SPEED_ADJUSTMENT+turnSpeed*TURN_ADJUSTMENT);
     }
     public void runTankDrive(double leftSpeed, double rightSpeed){
-        leftMotor.setPower(leftSpeed);
-        rightMotor.setPower(rightSpeed);
+        leftMotor.setPower(leftSpeed*SPEED_ADJUSTMENT);
+        rightMotor.setPower(rightSpeed*SPEED_ADJUSTMENT);
     }
 
 }
