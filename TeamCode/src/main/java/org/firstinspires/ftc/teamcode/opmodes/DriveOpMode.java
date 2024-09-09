@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -21,6 +21,7 @@ public class DriveOpMode extends OpMode {
     @Override
     public void init(){
         bot.init(hardwareMap);
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         processor = new CameraStreamProcessor();
 
@@ -60,15 +61,9 @@ public class DriveOpMode extends OpMode {
                 telemetry.addLine("Drive Mode: Tank");
                 break;
         }
-
-        TelemetryPacket packet = new TelemetryPacket();
-        packet.put("left_x", gamepad1.left_stick_x);
-        packet.put("left_y", gamepad1.left_stick_y);
-        packet.put("right_x", gamepad1.right_stick_x);
-        packet.put("right_y", gamepad1.right_stick_y);
-
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        dashboard.sendTelemetryPacket(packet);
+        telemetry.addData("Left Motor Rotations", bot.getLeftMotorRotations());
+        telemetry.addData("Right Motor Rotations", bot.getRightMotorRotations());
+        telemetry.addData("TPR", bot.ticksPerRotation);
 
     }
 

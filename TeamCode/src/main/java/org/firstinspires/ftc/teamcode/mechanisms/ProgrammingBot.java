@@ -12,7 +12,7 @@ public class ProgrammingBot {
     private DigitalChannel touchSensor;
     private DcMotor leftMotor;
     private DcMotor rightMotor;
-
+    public double ticksPerRotation;
 
     public void init(HardwareMap hwMap){
         touchSensor = hwMap.get(DigitalChannel.class, "touch_sensor");
@@ -22,6 +22,8 @@ public class ProgrammingBot {
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightMotor = hwMap.get(DcMotor.class, "Drive 2");
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ticksPerRotation = leftMotor.getMotorType().getTicksPerRev()/2;//div by 2 because that's what my manual test showed me.
+
 
     }
 
@@ -36,6 +38,13 @@ public class ProgrammingBot {
     public void runTankDrive(double leftSpeed, double rightSpeed){
         leftMotor.setPower(leftSpeed*SPEED_ADJUSTMENT);
         rightMotor.setPower(rightSpeed*SPEED_ADJUSTMENT);
+    }
+
+    public double getLeftMotorRotations() {
+        return leftMotor.getCurrentPosition()/ticksPerRotation;
+    }
+    public double getRightMotorRotations() {
+        return rightMotor.getCurrentPosition()/ticksPerRotation;
     }
 
 }
