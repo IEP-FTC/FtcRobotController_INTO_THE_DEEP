@@ -13,7 +13,6 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @TeleOp(name = "Drive")
 public class DriveOpMode extends OpMode {
     ProgrammingBot bot = new ProgrammingBot();
-    private CameraStreamProcessor processor;
 
     boolean wasUp, wasDown;
     int driveModeNum = 0;
@@ -23,7 +22,7 @@ public class DriveOpMode extends OpMode {
         bot.init(hardwareMap);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        processor = new CameraStreamProcessor();
+        CameraStreamProcessor processor = new CameraStreamProcessor();
 
         new VisionPortal.Builder()
                 .addProcessor(processor)
@@ -63,7 +62,6 @@ public class DriveOpMode extends OpMode {
         }
         telemetry.addData("Left Motor Rotations", bot.getLeftMotorRotations());
         telemetry.addData("Right Motor Rotations", bot.getRightMotorRotations());
-        telemetry.addData("TPR", bot.ticksPerRotation);
 
     }
 
