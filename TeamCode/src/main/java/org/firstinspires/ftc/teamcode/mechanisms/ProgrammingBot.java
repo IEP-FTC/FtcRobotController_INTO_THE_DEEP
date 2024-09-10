@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @Config
 public class ProgrammingBot {
-    public static double SPEED_ADJUSTMENT = 0.5;
+    public static double SPEED_ADJUSTMENT = 0.25;
     public static double TURN_ADJUSTMENT = 0.5;
     private DigitalChannel touchSensor;
     private DcMotor leftMotor;
@@ -47,4 +47,10 @@ public class ProgrammingBot {
         return rightMotor.getCurrentPosition()/ticksPerRotation;
     }
 
+    public void setLeftMotorPower(double leftPower) {
+        leftMotor.setPower(leftPower*SPEED_ADJUSTMENT);
+    }
+    public void setRightMotorPower(double rightPower) {
+        rightMotor.setPower(rightPower*SPEED_ADJUSTMENT);
+    }
 }
