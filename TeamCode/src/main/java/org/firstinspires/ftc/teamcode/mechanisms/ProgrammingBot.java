@@ -10,9 +10,11 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @Config
 public class ProgrammingBot {
-    public static double SPEED_ADJUSTMENT = 0.25;
+    public static double SPEED_ADJUSTMENT = 0.5;
     public static double TURN_ADJUSTMENT = 0.5;
     private DigitalChannel touchSensor;
     private DcMotor leftMotor;
@@ -55,7 +57,7 @@ public class ProgrammingBot {
         rightMotor.setPower(rightSpeed*SPEED_ADJUSTMENT);
     }
 
-    public void driveBot(Gamepad gamepad1){ //needs inputs
+    public void driveBot(Gamepad gamepad1, Telemetry telemetry){ //needs inputs
 
         if (gamepad1.dpad_up && !wasUp) {
 
