@@ -16,12 +16,12 @@ public class DriveAndClaw extends OpMode {
     @Override
     public void init() {
         bot.init(hardwareMap);
-        bot.setServoPosition(0);
+        bot.setServoPosition(1);
     }
 
     @Override
     public void loop() {
-        bot.driveBot(gamepad1);
+        bot.runArcadeDrive(gamepad1.right_stick_y, gamepad1.right_stick_x);
 
 // Declare variables to handle non-blocking timing
 
