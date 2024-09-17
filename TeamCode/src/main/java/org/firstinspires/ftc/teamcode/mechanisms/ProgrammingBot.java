@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
 public class ProgrammingBot {
@@ -13,6 +14,7 @@ public class ProgrammingBot {
     private DcMotor leftMotor;
     private DcMotor rightMotor;
     public double ticksPerRotation;
+    private Servo servo;
 
     public void init(HardwareMap hwMap){
         touchSensor = hwMap.get(DigitalChannel.class, "touch_sensor");
@@ -23,8 +25,15 @@ public class ProgrammingBot {
         rightMotor = hwMap.get(DcMotor.class, "Drive 2");
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ticksPerRotation = leftMotor.getMotorType().getTicksPerRev()/2;//div by 2 because that's what my manual test showed me.
+        servo = hwMap.get(Servo.class, "Servo");
 
+    }
 
+    public void setServoPosition(double position){
+        servo.setPosition(position);
+    }
+    public double getServoPosition(){
+        return servo.getPosition();
     }
 
     public boolean getTouchSensorState(){
