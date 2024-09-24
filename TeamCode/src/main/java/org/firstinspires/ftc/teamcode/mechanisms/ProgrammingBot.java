@@ -102,26 +102,21 @@ public class ProgrammingBot {
         rightMotor.setPower(rightPower*SPEED_ADJUSTMENT);
     }
     public void driveForward(){
-        leftMotor.setPower(.2*SPEED_ADJUSTMENT);
-        rightMotor.setPower(0.2*SPEED_ADJUSTMENT);
+        leftMotor.setPower(-1*SPEED_ADJUSTMENT);
+        rightMotor.setPower(-1*SPEED_ADJUSTMENT);
     }
     public void stopMotors(){
         leftMotor.setPower(0);
         rightMotor.setPower(0);
     }
-    public void turnTowardBearing(double bearing){
+    public void turnTowardBearingAndRange(double bearing, double range){
         if (abs(bearing) > TARGET_BEARING_TOLERANCE) {
             double turn_speed = bearing/20;
-            turn_speed = turn_speed*SPEED_ADJUSTMENT;
+            turn_speed = turn_speed*TURN_ADJUSTMENT;
 
             leftMotor.setPower(turn_speed);
             rightMotor.setPower(-turn_speed);
-        } else {
-            stopMotors();
-        }
-    }
-    public void driveToRange(double range){
-        if (range>20){
+        } else if (range>10) {
             driveForward();
         } else {
             stopMotors();
