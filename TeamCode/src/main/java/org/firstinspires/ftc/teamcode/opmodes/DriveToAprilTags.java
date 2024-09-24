@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.mechanisms.CameraStreamProcessor;
+import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBot;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
@@ -20,11 +21,11 @@ public class DriveToAprilTags extends OpMode {
 
     AprilTagProcessor aprilTagProcessor;
     VisionPortal visionPortal;
-
+    ProgrammingBot bot = new ProgrammingBot();
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
+        bot.init(hardwareMap);
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults();
         //visionPortal = VisionPortal.easyCreateWithDefaults(webcamName, aprilTagProcessor);
@@ -41,12 +42,14 @@ public class DriveToAprilTags extends OpMode {
 
     }
 
-    public void init_loop() {
+    @Override
+    public void loop() {
         telemetry.addLine("Status: Looking for Tags");
         List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
         StringBuilder idsFound = new StringBuilder();
         if (currentDetections.isEmpty()) {
             telemetry.addLine("No AprilTags detected.");
+            bot.stopMotors();
         } else {
             // Loop through all detected tags
             for (AprilTagDetection detection : currentDetections) {
@@ -63,24 +66,16 @@ public class DriveToAprilTags extends OpMode {
                             pose.yaw, pose.pitch, pose.roll);
                     telemetry.addData("RBE", "%.2f in, %.2f deg, %.2f deg",
                             pose.range, pose.bearing, pose.elevation);
+                    bot.driveTowardBearing(pose.bearing);
                 } else {
                     telemetry.addLine("Pose data not available for Tag ID: " + detection.id);
+                    bot.stopMotors();
                 }
             }
         }
         // Display all detected tag IDs
         telemetry.addData("April Tags", idsFound.toString());
         telemetry.update();
-
-    }
-
-    public void start() {
-        visionPortal.stopStreaming();
-
-    }
-
-    @Override
-    public void loop() {
 
     }
 

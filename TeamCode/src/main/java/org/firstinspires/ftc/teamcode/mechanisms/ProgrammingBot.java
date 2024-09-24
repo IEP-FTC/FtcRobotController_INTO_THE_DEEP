@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import static java.lang.Math.abs;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -16,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class ProgrammingBot {
     public static double SPEED_ADJUSTMENT = 0.5;
     public static double TURN_ADJUSTMENT = 0.5;
+    public static double TARGET_BEARING_RANGE = 5;
     private DigitalChannel touchSensor;
     private DcMotor leftMotor;
     private DcMotor rightMotor;
@@ -101,4 +104,21 @@ public class ProgrammingBot {
     public void setRightMotorPower(double rightPower) {
         rightMotor.setPower(rightPower*SPEED_ADJUSTMENT);
     }
+
+    public void stopMotors(){
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+    }
+    public void driveTowardBearing(double bearing){
+        if (abs(bearing) > TARGET_BEARING_RANGE) {
+            double turn_speed = bearing/20;
+            turn_speed = turn_speed*SPEED_ADJUSTMENT;
+
+            leftMotor.setPower(turn_speed);
+            rightMotor.setPower(-turn_speed);
+        } else {
+            stopMotors();
+        }
+    }
+
 }
