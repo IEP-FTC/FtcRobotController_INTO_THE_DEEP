@@ -60,8 +60,6 @@ public class DriveOpMode extends OpMode {
                 telemetry.addLine("Drive Mode: Tank");
                 break;
         }
-        telemetry.addData("Left Motor Rotations", bot.getLeftMotorRotations());
-        telemetry.addData("Right Motor Rotations", bot.getRightMotorRotations());
 
     }
 

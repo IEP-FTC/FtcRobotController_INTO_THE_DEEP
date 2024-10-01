@@ -62,7 +62,7 @@ public class SimpleAprilTags extends OpMode {
                     telemetry.addData("YPR (degrees)", "%.2f, %.2f, %.2f",
                             pose.yaw, pose.pitch, pose.roll);
                     telemetry.addData("RBE", "%.2f in, %.2f deg, %.2f deg",
-                            pose.yaw, pose.pitch, pose.roll);
+                            pose.range, pose.bearing, pose.elevation);
                 } else {
                     telemetry.addLine("Pose data not available for Tag ID: " + detection.id);
                 }
