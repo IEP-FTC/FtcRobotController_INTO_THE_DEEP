@@ -16,6 +16,8 @@ public class ProgrammingBot {
     public static double SPEED_ADJUSTMENT = 0.5;
     public static double TURN_ADJUSTMENT = 0.5;
     public static double TARGET_BEARING_TOLERANCE = 2.5;
+    public static double MAX_POWER = .7;
+    public static double MIN_POWER = .05;
     private DigitalChannel touchSensor;
     private DcMotor leftMotor;
     private DcMotor rightMotor;
@@ -28,10 +30,10 @@ public class ProgrammingBot {
         touchSensor = hwMap.get(DigitalChannel.class, "touch_sensor");
         touchSensor.setMode(DigitalChannel.Mode.INPUT);
         leftMotor = hwMap.get(DcMotor.class, "Drive 1");
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightMotor = hwMap.get(DcMotor.class, "Drive 2");
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);
         ticksPerRotation = leftMotor.getMotorType().getTicksPerRev()/2;//div by 2 because that's what my manual test showed me.
         servo = hwMap.get(Servo.class, "Servo");
 
@@ -102,8 +104,8 @@ public class ProgrammingBot {
         rightMotor.setPower(rightPower*SPEED_ADJUSTMENT);
     }
     public void driveForward(){
-        leftMotor.setPower(-1*SPEED_ADJUSTMENT);
-        rightMotor.setPower(-1*SPEED_ADJUSTMENT);
+        leftMotor.setPower(1*SPEED_ADJUSTMENT);
+        rightMotor.setPower(1*SPEED_ADJUSTMENT);
     }
     public void stopMotors(){
         leftMotor.setPower(0);
@@ -122,30 +124,38 @@ public class ProgrammingBot {
             stopMotors();
         }
     }
-    public void goToBearingAndRange(double bearing, double range){
-        double turn_speed;
-        if (abs(bearing) > TARGET_BEARING_TOLERANCE) {
-            turn_speed = bearing/20;
-            turn_speed = turn_speed*TURN_ADJUSTMENT;
-            if (turn_speed < 0.2 && turn_speed > 0) {
-                turn_speed = 0.2;
-            } else if (turn_speed > -0.2 && turn_speed < 0) {
-                turn_speed = -0.2;
-            }
-            leftMotor.setPower(turn_speed);
-            rightMotor.setPower(-turn_speed);
-        } else {
-            stopMotors();
+    public void slowDown(){
+        leftMotor.setPower(leftMotor.getPower()/2);
+        rightMotor.setPower(rightMotor.getPower()/2);
+    }
+
+    public void adjustMotorPower(DcMotor motor, double speed){
+        double motor_power = motor.getPower();
+        double new_power = motor_power + speed;
+        if (new_power > MAX_POWER) {
+            new_power = MAX_POWER;
+        } else if (new_power < -MAX_POWER) {
+            new_power = -MAX_POWER*0;
         }
 
-        driveForward();
-        turn_speed = bearing/20;
-        turn_speed = turn_speed*TURN_ADJUSTMENT;
-        if (turn_speed < 0) {
-            rightMotor.setPower(rightMotor.getPower()+turn_speed);
-        }
-        if (turn_speed > 0) {
-            leftMotor.setPower(leftMotor.getPower()-turn_speed);
+        motor.setPower(new_power);
+    }
+
+    public void goToBearingAndRange(double bearing, double range){
+        double turn_speed;
+        if (range > 20) {
+
+            turn_speed = bearing / 20;
+            if (bearing > 0) {
+                adjustMotorPower(leftMotor, -turn_speed);
+                adjustMotorPower(rightMotor, turn_speed);
+            } else {
+                adjustMotorPower(leftMotor, -turn_speed);
+                adjustMotorPower(rightMotor, turn_speed);
+            }
+
+        } else {
+            stopMotors();
         }
     }
 

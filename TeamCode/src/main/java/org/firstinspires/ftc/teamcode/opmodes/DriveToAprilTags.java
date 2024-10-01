@@ -49,7 +49,7 @@ public class DriveToAprilTags extends OpMode {
         StringBuilder idsFound = new StringBuilder();
         if (currentDetections.isEmpty()) {
             telemetry.addLine("No AprilTags detected.");
-            bot.stopMotors();
+            bot.slowDown();
         } else {
             // Loop through all detected tags
             for (AprilTagDetection detection : currentDetections) {
@@ -60,16 +60,12 @@ public class DriveToAprilTags extends OpMode {
                 // Report the pose (translation and rotation) of the detected tag
                 if (pose != null) {
                     telemetry.addLine("Detected Tag ID: " + detection.id);
-                    telemetry.addData("XYZ (inches)", "%.2f in, %.2f, %.2f",
-                            pose.x, pose.y, pose.z);
-                    telemetry.addData("YPR (degrees)", "%.2f, %.2f, %.2f",
-                            pose.yaw, pose.pitch, pose.roll);
-                    telemetry.addData("RBE", "%.2f in, %.2f deg, %.2f deg",
-                            pose.range, pose.bearing, pose.elevation);
-                    bot.goToBearingAndRange(pose.bearing, pose.range);
+                    telemetry.addData("Range:", "%.2f in", correctRange(pose.range));
+                    telemetry.addData("Bearing:", "%.2f deg", pose.bearing);
+                    bot.goToBearingAndRange(pose.bearing, correctRange(pose.range));
                 } else {
                     telemetry.addLine("Pose data not available for Tag ID: " + detection.id);
-                    bot.stopMotors();
+                    bot.slowDown();
                 }
             }
         }
@@ -79,5 +75,9 @@ public class DriveToAprilTags extends OpMode {
 
     }
 
+    public double correctRange(double range){
+        return range*1.6; // This correction is based on measurements we made.
+
+    }
 
 }
