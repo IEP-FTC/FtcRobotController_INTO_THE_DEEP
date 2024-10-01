@@ -66,7 +66,7 @@ public class DriveToAprilTags extends OpMode {
                             pose.yaw, pose.pitch, pose.roll);
                     telemetry.addData("RBE", "%.2f in, %.2f deg, %.2f deg",
                             pose.range, pose.bearing, pose.elevation);
-                    bot.turnTowardBearingAndRange(pose.bearing, pose.range);
+                    bot.goToBearingAndRange(pose.bearing, pose.range);
                 } else {
                     telemetry.addLine("Pose data not available for Tag ID: " + detection.id);
                     bot.stopMotors();

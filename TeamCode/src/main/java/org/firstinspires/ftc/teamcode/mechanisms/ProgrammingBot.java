@@ -109,7 +109,7 @@ public class ProgrammingBot {
         leftMotor.setPower(0);
         rightMotor.setPower(0);
     }
-    public void turnTowardBearingAndRange(double bearing, double range){
+    public void goToBearingAndRange(double bearing, double range){
         if (abs(bearing) > TARGET_BEARING_TOLERANCE) {
             double turn_speed = bearing/20;
             turn_speed = turn_speed*TURN_ADJUSTMENT;
