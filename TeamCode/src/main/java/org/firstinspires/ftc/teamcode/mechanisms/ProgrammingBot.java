@@ -109,7 +109,7 @@ public class ProgrammingBot {
         leftMotor.setPower(0);
         rightMotor.setPower(0);
     }
-    public void goToBearingAndRange(double bearing, double range){
+    public void goToBearingAndRangeOLD(double bearing, double range){
         if (abs(bearing) > TARGET_BEARING_TOLERANCE) {
             double turn_speed = bearing/20;
             turn_speed = turn_speed*TURN_ADJUSTMENT;
@@ -120,6 +120,32 @@ public class ProgrammingBot {
             driveForward();
         } else {
             stopMotors();
+        }
+    }
+    public void goToBearingAndRange(double bearing, double range){
+        double turn_speed;
+        if (abs(bearing) > TARGET_BEARING_TOLERANCE) {
+            turn_speed = bearing/20;
+            turn_speed = turn_speed*TURN_ADJUSTMENT;
+            if (turn_speed < 0.2 && turn_speed > 0) {
+                turn_speed = 0.2;
+            } else if (turn_speed > -0.2 && turn_speed < 0) {
+                turn_speed = -0.2;
+            }
+            leftMotor.setPower(turn_speed);
+            rightMotor.setPower(-turn_speed);
+        } else {
+            stopMotors();
+        }
+
+        driveForward();
+        turn_speed = bearing/20;
+        turn_speed = turn_speed*TURN_ADJUSTMENT;
+        if (turn_speed < 0) {
+            rightMotor.setPower(rightMotor.getPower()+turn_speed);
+        }
+        if (turn_speed > 0) {
+            leftMotor.setPower(leftMotor.getPower()-turn_speed);
         }
     }
 
