@@ -16,8 +16,8 @@ public class ProgrammingBot {
     public static double SPEED_ADJUSTMENT = 0.5;
     public static double TURN_ADJUSTMENT = 0.5;
     public static double TARGET_BEARING_TOLERANCE = 2.5;
-    public static double MAX_POWER = .7;
-    public static double MIN_POWER = .05;
+    public static double MAX_POWER = .75;
+    public static double MIN_POWER = 0.2;
     private DigitalChannel touchSensor;
     private DcMotor leftMotor;
     private DcMotor rightMotor;
@@ -134,8 +134,8 @@ public class ProgrammingBot {
         double new_power = motor_power + speed;
         if (new_power > MAX_POWER) {
             new_power = MAX_POWER;
-        } else if (new_power < -MAX_POWER) {
-            new_power = -MAX_POWER*0;
+        } else if (new_power < MIN_POWER) {
+            new_power = MIN_POWER;
         }
 
         motor.setPower(new_power);
@@ -143,9 +143,9 @@ public class ProgrammingBot {
 
     public void goToBearingAndRange(double bearing, double range){
         double turn_speed;
-        if (range > 20) {
+        if (range > 15) {
 
-            turn_speed = bearing / 20;
+            turn_speed = bearing / 40;
             if (bearing > 0) {
                 adjustMotorPower(leftMotor, -turn_speed);
                 adjustMotorPower(rightMotor, turn_speed);
