@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import java.util.ArrayList;
 
 @Config
 public class ProgrammingBot {
@@ -19,8 +20,7 @@ public class ProgrammingBot {
     public static double MAX_POWER = .75;
     public static double MIN_POWER = 0.2;
     private DigitalChannel touchSensor;
-    private DcMotor leftMotor;
-    private DcMotor rightMotor;
+    private DcMotor leftMotor, rightMotor;
     public double ticksPerRotation;
     private Servo servo;
     boolean wasUp, wasDown;
@@ -37,7 +37,9 @@ public class ProgrammingBot {
         ticksPerRotation = leftMotor.getMotorType().getTicksPerRev()/2;//div by 2 because that's what my manual test showed me.
         servo = hwMap.get(Servo.class, "Servo");
 
+
     }
+
 
     public void setServoPosition(double position){
         servo.setPosition(position);
@@ -157,6 +159,13 @@ public class ProgrammingBot {
         } else {
             stopMotors();
         }
+    }
+
+    public ArrayList<TestItem> getTests(){
+        ArrayList<TestItem> tests = new ArrayList<>();
+        tests.add(new TestMotor("Right Motor", 0.5, rightMotor));
+        tests.add(new TestMotor("Left Motor", 0.5, leftMotor));
+        return tests;
     }
 
 }
