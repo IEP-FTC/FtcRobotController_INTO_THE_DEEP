@@ -17,8 +17,7 @@ public class ProgrammingBot {
     public static double SPEED_ADJUSTMENT = 0.5;
     public static double TURN_ADJUSTMENT = 0.5;
     private DigitalChannel touchSensor;
-    private DcMotor leftMotor;
-    private DcMotor rightMotor;
+    private DcMotor leftMotor, rightMotor, intakeMotor;
     public double ticksPerRotation;
     private Servo servo;
     boolean wasUp, wasDown;
@@ -34,9 +33,19 @@ public class ProgrammingBot {
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ticksPerRotation = leftMotor.getMotorType().getTicksPerRev()/2;//div by 2 because that's what my manual test showed me.
         servo = hwMap.get(Servo.class, "Servo");
+        intakeMotor = hwMap.get(DcMotor.class, "Intake 1");
 
     }
-
+    public void runIntake (boolean forward) {
+        if (forward) {
+            intakeMotor.setPower(0.5);
+        } else {
+            intakeMotor.setPower(-0.5);
+        }
+    }
+    public void stopIntake () {
+        intakeMotor.setPower(0);
+    }
     public void setServoPosition(double position){
         servo.setPosition(position);
     }
