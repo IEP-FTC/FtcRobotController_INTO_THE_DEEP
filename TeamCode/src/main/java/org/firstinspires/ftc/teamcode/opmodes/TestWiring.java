@@ -19,7 +19,7 @@ public class TestWiring extends OpMode {
     @Override
     public void init() {
         bot.init(hardwareMap);
-        tests = bot.getTests();
+        //tests = bot.getTests();
     }
 
     @Override
