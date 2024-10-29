@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBot;
 
-@TeleOp(name="Drive and Claw", group="Linear Opmode")
+@TeleOp(name="Drive and Claw")
 public class DriveAndClaw extends OpMode {
     ProgrammingBot bot = new ProgrammingBot();
 
