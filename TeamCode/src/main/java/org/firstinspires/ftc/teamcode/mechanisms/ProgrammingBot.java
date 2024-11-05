@@ -42,11 +42,11 @@ public class ProgrammingBot {
     }
 
 
-    public void runIntake (boolean forward) {
+    public void runIntake (boolean forward, double power) {
         if (forward) {
-            intakeMotor.setPower(0.5);
+            intakeMotor.setPower(power);
         } else {
-            intakeMotor.setPower(-0.5);
+            intakeMotor.setPower(-power);
         }
     }
     public void stopIntake () {
