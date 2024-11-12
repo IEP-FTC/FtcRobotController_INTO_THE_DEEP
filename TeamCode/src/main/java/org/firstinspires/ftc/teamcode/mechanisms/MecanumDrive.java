@@ -3,11 +3,16 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 public class MecanumDrive {
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
+    ImuControl imu = new ImuControl();
+
+    private double targetHeading = 0;
 
     public void init(HardwareMap hardwareMap) {
         frontLeftMotor = hardwareMap.dcMotor.get("front_left_motor");
@@ -22,6 +27,8 @@ public class MecanumDrive {
         frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        imu.init(hardwareMap);
     }
     private void setPowers(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower){
         double maxSpeed = 1.0;
@@ -46,6 +53,28 @@ public class MecanumDrive {
         double backLeftPower = forward - right + rotate;
         double backRightPower = forward + right - rotate;
 
+        setPowers(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
+    }
+    public void driveGyroCorrected(double forward, double right, double rotate){
+        double frontLeftPower;
+        double frontRightPower;
+        double backLeftPower;
+        double backRightPower;
+        if (rotate <= 0.05){
+            double heading = imu.getHeading(AngleUnit.DEGREES);
+            double rotateDegrees = targetHeading - heading;
+            rotate = rotateDegrees/45;
+            frontLeftPower = forward + right + rotate;
+            frontRightPower = forward - right - rotate;
+            backLeftPower = forward - right + rotate;
+            backRightPower = forward + right - rotate;
+        }else {
+            frontLeftPower = forward + right + rotate;
+            frontRightPower = forward - right - rotate;
+            backLeftPower = forward - right + rotate;
+            backRightPower = forward + right - rotate;
+            targetHeading = imu.getHeading(AngleUnit.DEGREES);
+        }
         setPowers(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
     }
 }
