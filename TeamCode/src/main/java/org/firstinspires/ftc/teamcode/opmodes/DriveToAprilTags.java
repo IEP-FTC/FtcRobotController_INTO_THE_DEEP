@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.mechanisms.CameraStreamProcessor;
+import org.firstinspires.ftc.teamcode.mechanisms.CompetitionBot;
+import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBot;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -21,11 +23,11 @@ public class DriveToAprilTags extends OpMode {
 
     AprilTagProcessor aprilTagProcessor;
     VisionPortal visionPortal;
-    ProgrammingBot bot = new ProgrammingBot();
+    MecanumDrive drive = new MecanumDrive();
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        bot.init(hardwareMap);
+        drive.init(hardwareMap);
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults();
         //visionPortal = VisionPortal.easyCreateWithDefaults(webcamName, aprilTagProcessor);
@@ -49,7 +51,7 @@ public class DriveToAprilTags extends OpMode {
         StringBuilder idsFound = new StringBuilder();
         if (currentDetections.isEmpty()) {
             telemetry.addLine("No AprilTags detected.");
-            bot.slowDown();
+            drive.stop();
         } else {
             // Loop through all detected tags
             for (AprilTagDetection detection : currentDetections) {
@@ -62,10 +64,10 @@ public class DriveToAprilTags extends OpMode {
                     telemetry.addLine("Detected Tag ID: " + detection.id);
                     telemetry.addData("Range:", "%.2f in", correctRange(pose.range));
                     telemetry.addData("Bearing:", "%.2f deg", pose.bearing);
-                    bot.goToBearingAndRange(pose.bearing, correctRange(pose.range));
+                    drive.goToBearingAndRange(pose.bearing, correctRange(pose.range));
                 } else {
                     telemetry.addLine("Pose data not available for Tag ID: " + detection.id);
-                    bot.slowDown();
+                    drive.stop();
                 }
             }
         }
