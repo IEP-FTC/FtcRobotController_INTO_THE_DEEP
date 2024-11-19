@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @Autonomous
 public class BennettAuto extends OpMode {
     MecanumDrive mecanumDriveAuto = new MecanumDrive();
+    boolean doneOnce = false;
 
     @Override
     public void init() {mecanumDriveAuto.init(hardwareMap);
@@ -18,29 +19,32 @@ public class BennettAuto extends OpMode {
 
     @Override
     public void loop() {
-        double forward;
-        double right;
-        double rotate;
 
-        mecanumDriveAuto.drive(1, 0, 0);
-        try {
-            Thread.sleep(750);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        if (!doneOnce) {
+            mecanumDriveAuto.drive(1, 0, 0);
+            try {
+                Thread.sleep(750);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            mecanumDriveAuto.drive(0, 1, 0);
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            mecanumDriveAuto.drive(-1, 0, 0);
+            try {
+                Thread.sleep(750);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            doneOnce = true;
         }
-        mecanumDriveAuto.drive(0, 1, 0);
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        mecanumDriveAuto.drive(-1, 0, 0);
-        try {
-            Thread.sleep(750);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+
+        mecanumDriveAuto.drive(0,0,0);
 
 
     }
+
 }
