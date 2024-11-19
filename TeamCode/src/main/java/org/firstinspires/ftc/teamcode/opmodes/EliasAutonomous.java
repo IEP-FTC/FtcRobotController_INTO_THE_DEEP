@@ -22,22 +22,23 @@ public class EliasAutonomous extends OpMode {
         if (isGoing) {
             mecanumDrive.drive(0.5, 0.0, 0.0);
             try {
-                Thread.sleep(3000);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            mecanumDrive.drive(0.0, 0.5, 0.0);
+            mecanumDrive.driveGyroCorrected(0.0, 0.5, 0.0);
             try {
-                Thread.sleep(3000);
+                Thread.sleep(4000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             mecanumDrive.drive(-0.5, 0.0, 0.0);
             try {
-                Thread.sleep(3000);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            mecanumDrive.drive(0.0, -0.0, 0.0);
             isGoing = false;
         }
     }
