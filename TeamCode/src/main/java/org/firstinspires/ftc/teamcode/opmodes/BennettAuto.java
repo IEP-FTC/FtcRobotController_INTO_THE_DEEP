@@ -24,19 +24,19 @@ public class BennettAuto extends OpMode {
 
         mecanumDriveAuto.drive(1, 0, 0);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         mecanumDriveAuto.drive(0, 1, 0);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         mecanumDriveAuto.drive(-1, 0, 0);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

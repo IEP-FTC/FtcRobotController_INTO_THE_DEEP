@@ -42,8 +42,8 @@ public class TestClimber extends OpMode {
 
         if (toggleState) {
 
-            climberR.setTargetPosition(-72*120/15);
-            climberL.setTargetPosition(-72*120/15);
+            climberR.setTargetPosition(-72*125/30);
+            climberL.setTargetPosition(-72*125/30);
 
         } else {
             climberR.setTargetPosition(0);
