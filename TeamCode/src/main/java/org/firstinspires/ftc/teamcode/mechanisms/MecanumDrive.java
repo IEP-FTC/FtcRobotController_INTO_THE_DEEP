@@ -48,6 +48,7 @@ public class MecanumDrive {
         backRightMotor.setPower(backRightPower);
     }
     public void drive(double forward, double right, double rotate){
+        forward = -forward;
         double frontLeftPower = forward + right + rotate;
         double frontRightPower = forward - right - rotate;
         double backLeftPower = forward - right + rotate;
@@ -56,6 +57,7 @@ public class MecanumDrive {
         setPowers(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
     }
     public void driveGyroCorrected(double forward, double right, double rotate){
+        forward = -forward;
         double frontLeftPower;
         double frontRightPower;
         double backLeftPower;
@@ -76,5 +78,31 @@ public class MecanumDrive {
             targetHeading = imu.getHeading(AngleUnit.DEGREES);
         }
         setPowers(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
+    }
+    public void stop(){
+        setPowers(0,0,0,0);
+    }
+
+    public void goToBearingAndRange(double bearing, double range){
+        double rotate;
+        double forward;
+        double heading = imu.getHeading(AngleUnit.DEGREES);
+        double targetHeading = heading+bearing;
+        if (targetHeading-heading>5){
+            if (bearing>0){
+                rotate=.5;
+            } else {
+                rotate = -0.5;
+            }
+        } else {
+            rotate = 0;
+        }
+        if (range >10){
+            forward = 1;
+        } else {
+            forward = 0;
+        }
+        driveGyroCorrected(forward, 0, rotate);
+
     }
 }

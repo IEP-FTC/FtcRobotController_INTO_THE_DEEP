@@ -19,7 +19,7 @@ public class SimpleMecanumDriveOpMode extends OpMode {
 
     @Override
     public void loop(){
-        double forward = -gamepad1.left_stick_y;
+        double forward = gamepad1.left_stick_y;
         double right = gamepad1.left_stick_x;
         double rotate = gamepad1.right_stick_x;
 
