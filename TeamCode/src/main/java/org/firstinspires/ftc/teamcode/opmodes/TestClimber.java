@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp
 public class TestClimber extends OpMode {
-
     private DcMotor climberL;
     private DcMotor climberR;
     private boolean toggleState = false;

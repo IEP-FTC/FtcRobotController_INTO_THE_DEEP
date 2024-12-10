@@ -11,6 +11,9 @@ public class ArmPivot {
         pivotRight = HardMap.get(DcMotor.class, "pivotRight");
         pivotLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         pivotRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        pivotLeft.setDirection(DcMotor.Direction.REVERSE);
+
         pivotLeft.setTargetPosition(0);
         pivotRight.setTargetPosition(0);
         pivotLeft.setPower(0.75);
