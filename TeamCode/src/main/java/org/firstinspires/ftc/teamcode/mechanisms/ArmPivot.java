@@ -12,7 +12,7 @@ public class ArmPivot {
         pivotLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         pivotRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        pivotLeft.setDirection(DcMotor.Direction.REVERSE);
+        pivotRight.setDirection(DcMotor.Direction.REVERSE);
 
         pivotLeft.setTargetPosition(0);
         pivotRight.setTargetPosition(0);

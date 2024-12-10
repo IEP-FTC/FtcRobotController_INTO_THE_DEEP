@@ -35,6 +35,8 @@ public class Arm extends OpMode {
             slide.runSlide(false, gamepad1.left_trigger);
         } else if (gamepad1.right_trigger > .1) {
             slide.runSlide(true, gamepad1.right_trigger);
+        } else {
+            slide.runSlide(true,0);
         }
         //ArmPivot A 110 degrees toggle
         if (gamepad1.a && !aPressed) {
