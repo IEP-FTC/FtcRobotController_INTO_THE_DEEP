@@ -39,8 +39,6 @@ public class SimpleAprilTags extends OpMode {
                 .build();
 
         FtcDashboard.getInstance().startCameraStream(processor, 0);
-
-
     }
     public void init_loop(){
         telemetry.addLine("Status: Looking for Tags");
