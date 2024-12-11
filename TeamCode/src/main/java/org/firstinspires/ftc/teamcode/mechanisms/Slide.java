@@ -11,11 +11,12 @@ public class Slide {
         slideMotor = hwMap.get(DcMotor.class, "Slide 1");
     }
 
-    public void runSlide (boolean extend, double power) {
+    public void runSlide (boolean extend, double power) { //TODO limit slide extension&retraction length with motor ticks (run using encoder)
         if (extend) {
             slideMotor.setPower(power);
         } else {
             slideMotor.setPower(-power);
         }
     }
+    //TODO new function to fully extend/retract slide at full power (from any point)
 }

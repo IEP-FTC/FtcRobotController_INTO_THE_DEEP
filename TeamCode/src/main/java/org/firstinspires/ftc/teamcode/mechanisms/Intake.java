@@ -12,7 +12,7 @@ public class Intake {
         intakeMotor = hardwareMap.get(DcMotor.class, "intake 1");
     }
 
-    public void runIntake (boolean forward, double power) {
+    public void runIntake (boolean forward, double power) { //TODO Remove power, always run at 100%
 
         if (forward) {
             intakeMotor.setPower(power);
