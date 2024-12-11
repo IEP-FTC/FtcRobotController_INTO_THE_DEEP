@@ -1,20 +1,15 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Config
 @TeleOp
 public class TestClimber extends OpMode {
-
     private DcMotor climberL;
     private DcMotor climberR;
     private boolean toggleState = false;
     private boolean aPressed = false;
-    public static double ARM_POWER = 0.50;
-    public static int TARGET_ROTATION_TICKS = 72;
 
 
     @Override
@@ -27,8 +22,8 @@ public class TestClimber extends OpMode {
         climberR.setTargetPosition(0);
         climberL.setTargetPosition(0);
 
-        climberL.setPower(ARM_POWER);
-        climberR.setPower(ARM_POWER);
+        climberL.setPower(0.75);
+        climberR.setPower(0.75);
         climberL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         climberR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
@@ -46,8 +41,8 @@ public class TestClimber extends OpMode {
 
         if (toggleState) {
 
-            climberR.setTargetPosition(-TARGET_ROTATION_TICKS*125/30);
-            climberL.setTargetPosition(-TARGET_ROTATION_TICKS*125/30);
+            climberR.setTargetPosition(-72*125/30);
+            climberL.setTargetPosition(+72*125/30);
 
         } else {
             climberR.setTargetPosition(0);
