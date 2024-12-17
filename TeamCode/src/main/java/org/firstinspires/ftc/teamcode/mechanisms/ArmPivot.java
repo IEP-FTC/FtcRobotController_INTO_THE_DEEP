@@ -25,6 +25,18 @@ public class ArmPivot {
         int  targetPosition = ((degrees*125)/30)/(360/288);//125 = big gear, 30 = small gear, 360/288 = tick ratio
         pivotLeft.setTargetPosition(targetPosition);
         pivotRight.setTargetPosition(targetPosition);
+        int currentPosition = pivotRight.getCurrentPosition();
 
+        if (targetPosition > currentPosition) {
+            pivotLeft.setTargetPosition(targetPosition);
+            pivotRight.setTargetPosition(targetPosition);
+            pivotLeft.setPower(0.75);
+            pivotRight.setPower(0.75);
+        } else {
+            pivotLeft.setTargetPosition(targetPosition);
+            pivotRight.setTargetPosition(targetPosition);
+            pivotLeft.setPower(0.25);
+            pivotRight.setPower(0.25);
+        }
     }
 }
