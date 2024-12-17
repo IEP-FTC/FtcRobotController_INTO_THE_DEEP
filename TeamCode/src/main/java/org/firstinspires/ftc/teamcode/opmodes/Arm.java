@@ -30,7 +30,9 @@ public class Arm extends OpMode {
             intake.runIntake(true);
         } else if (gamepad1.x) {
             intake.runIntake(false);
-        }//TODO Add stop intake
+        } else {
+            intake.stopIntake();
+        }
 
         //Slide R Trigger extend L trigger contract
         if (gamepad1.left_trigger > .1) {
