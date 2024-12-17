@@ -27,9 +27,9 @@ public class Arm extends OpMode {
 
         //Intake Control B in X out
         if (gamepad1.b) {
-            intake.runIntake(true, 1);
+            intake.runIntake(true);
         } else if (gamepad1.x) {
-            intake.runIntake(false, 1);
+            intake.runIntake(false);
         }//TODO Add stop intake
 
         //Slide R Trigger extend L trigger contract
