@@ -18,5 +18,12 @@ public class Slide {
             slideMotor.setPower(-power);
         }
     }
+
+    public void moveToPosition(int inches) {
+        int  targetPosition = inches*(288/3); //Figure out equation for inches/ticks
+        slideMotor.setTargetPosition(targetPosition);
+
+    }
+
     //TODO new function to fully extend/retract slide at full power (from any point)
 }
