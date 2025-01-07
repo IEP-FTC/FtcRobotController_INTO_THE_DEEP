@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
-
+@Disabled
 @Autonomous
 public class BennettAuto extends OpMode {
     MecanumDrive mecanumDriveAuto = new MecanumDrive();

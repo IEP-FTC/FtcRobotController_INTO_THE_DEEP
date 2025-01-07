@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.CameraStreamProcessor;
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBot;
 import org.firstinspires.ftc.vision.VisionPortal;
 //test
+@Disabled
 @TeleOp(name = "Drive")
 public class DriveOpMode extends OpMode {
     ProgrammingBot bot = new ProgrammingBot();

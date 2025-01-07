@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @Config
 @TeleOp
 public class MasterMode extends OpMode {
-    int PIVOTANGLE = 70;
+    public static int PIVOTANGLE = 75;
     Intake intake = new Intake();
     ArmPivot armPivot = new ArmPivot();
     Slide slide = new Slide();
