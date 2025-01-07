@@ -33,11 +33,11 @@ public class MasterMode extends OpMode {
     public void loop() {
 
         if (gamepad1.b) {
-            intake.runIntake(true, 1);
+            intake.runIntake(true);
         } else if (gamepad1.x) {
-            intake.runIntake(true, -1);
+            intake.runIntake(false);
         } else {
-            intake.runIntake(true, 0);
+            intake.stopIntake();
         }
 
         if (gamepad1.right_trigger >= 0.1) {
