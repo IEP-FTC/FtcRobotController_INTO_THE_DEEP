@@ -1,25 +1,24 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
-import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.Slide;
+import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
+@Config
 @TeleOp
 public class MasterMode extends OpMode {
-    private DcMotor slideMotor;
+    int PIVOTANGLE = 70;
     Intake intake = new Intake();
     ArmPivot armPivot = new ArmPivot();
     Slide slide = new Slide();
-    MecanumDrive mecanumDrive = new MecanumDrive();
-    boolean armState = false;
+    boolean toggleState = false;
     boolean aPressed = false;
-
+    MecanumDrive mecanumDrive = new MecanumDrive();
 
     @Override
     public void init() {
@@ -28,10 +27,10 @@ public class MasterMode extends OpMode {
         slide.init(hardwareMap);
         mecanumDrive.init(hardwareMap);
     }
-
     @Override
     public void loop() {
 
+        //Intake Control B in X out
         if (gamepad1.b) {
             intake.runIntake(true);
         } else if (gamepad1.x) {
@@ -40,25 +39,34 @@ public class MasterMode extends OpMode {
             intake.stopIntake();
         }
 
-        if (gamepad1.right_trigger >= 0.1) {
+        //Slide R Trigger extend L trigger contract
+        if (gamepad1.left_trigger > .1) {
+            slide.runSlide(false, gamepad1.left_trigger);
+        } else if (gamepad1.right_trigger > .1) {
             slide.runSlide(true, gamepad1.right_trigger);
-        } else if (gamepad1.left_trigger >= 0.1) {
-            slide.runSlide(true, -gamepad1.left_trigger);
-        }
+        } else {
+            slide.runSlide(true,0);
+        }//TODO add full extension/retract on bumpers
 
+        //ArmPivot A 110 degrees toggle
         if (gamepad1.a && !aPressed) {
-            armState = !armState;
-            aPressed = true;
+            toggleState = !toggleState; // Toggle state
+            aPressed = true;           // Set flag to prevent retrigger
         } else if (!gamepad1.a) {
-            aPressed = false;
+            aPressed = false;          // Reset flag when button is released
         }
 
-        if (armState) {
-            armPivot.moveToPosition(110);
+        if (toggleState) {
+            armPivot.moveToPosition(PIVOTANGLE);//TODO adjust angle to correct (<110)
+
         } else {
             armPivot.moveToPosition(0);
         }
+
         mecanumDrive.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
     }
 }
+
+
+
