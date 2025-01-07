@@ -12,12 +12,12 @@ public class Intake {
         intakeMotor = hardwareMap.get(DcMotor.class, "intake 1");
     }
 
-    public void runIntake (boolean forward, double power) {
+    public void runIntake (boolean forward) {
 
         if (forward) {
-            intakeMotor.setPower(power);
+            intakeMotor.setPower(1);
         } else {
-            intakeMotor.setPower(-power);
+            intakeMotor.setPower(-1);
         }
     }
 

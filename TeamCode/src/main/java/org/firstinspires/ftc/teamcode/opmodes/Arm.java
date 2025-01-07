@@ -24,12 +24,16 @@ public class Arm extends OpMode {
     }
     @Override
     public void loop() {
+
         //Intake Control B in X out
         if (gamepad1.b) {
-            intake.runIntake(true, 1);
+            intake.runIntake(true);
         } else if (gamepad1.x) {
-            intake.runIntake(false, 1);
+            intake.runIntake(false);
+        } else {
+            intake.stopIntake();
         }
+
         //Slide R Trigger extend L trigger contract
         if (gamepad1.left_trigger > .1) {
             slide.runSlide(false, gamepad1.left_trigger);
@@ -37,7 +41,8 @@ public class Arm extends OpMode {
             slide.runSlide(true, gamepad1.right_trigger);
         } else {
             slide.runSlide(true,0);
-        }
+        }//TODO add full extension/retract on bumpers
+
         //ArmPivot A 110 degrees toggle
         if (gamepad1.a && !aPressed) {
             toggleState = !toggleState; // Toggle state
@@ -47,7 +52,7 @@ public class Arm extends OpMode {
         }
 
         if (toggleState) {
-            armPivot.moveToPosition(110);
+            armPivot.moveToPosition(110);//TODO adjust angle to correct (<110)
 
         } else {
             armPivot.moveToPosition(0);
