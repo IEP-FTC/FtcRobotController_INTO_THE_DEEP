@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,8 +8,10 @@ import org.firstinspires.ftc.teamcode.mechanisms.ArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.Slide;
 
+@Config
 @TeleOp
 public class Arm extends OpMode {
+    int PIVOTANGLE = 70;
     Intake intake = new Intake();
     ArmPivot armPivot = new ArmPivot();
     Slide slide = new Slide();
@@ -52,7 +55,7 @@ public class Arm extends OpMode {
         }
 
         if (toggleState) {
-            armPivot.moveToPosition(110);//TODO adjust angle to correct (<110)
+            armPivot.moveToPosition(PIVOTANGLE);//TODO adjust angle to correct (<110)
 
         } else {
             armPivot.moveToPosition(0);

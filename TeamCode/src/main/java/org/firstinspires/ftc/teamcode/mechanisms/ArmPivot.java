@@ -16,8 +16,8 @@ public class ArmPivot {
 
         pivotLeft.setTargetPosition(0);
         pivotRight.setTargetPosition(0);
-        pivotLeft.setPower(0.75);
-        pivotRight.setPower(0.75);
+        pivotLeft.setPower(0.50);
+        pivotRight.setPower(0.50);
         pivotLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         pivotRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
@@ -30,8 +30,8 @@ public class ArmPivot {
         if (targetPosition > currentPosition) {
             pivotLeft.setTargetPosition(targetPosition);
             pivotRight.setTargetPosition(targetPosition);
-            pivotLeft.setPower(0.75);
-            pivotRight.setPower(0.75);
+            pivotLeft.setPower(0.5);
+            pivotRight.setPower(0.5); //TODO hold at 100% power
         } else {
             pivotLeft.setTargetPosition(targetPosition);
             pivotRight.setTargetPosition(targetPosition);
