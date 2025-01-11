@@ -44,4 +44,10 @@ public class ArmPivot {
         pivotLeft.setPower(1);
         pivotRight.setPower(1);
     }
+
+    public void setPower(double power){
+        power = power/2;
+        pivotLeft.setPower(power);
+        pivotRight.setPower(power);
+    }
 }

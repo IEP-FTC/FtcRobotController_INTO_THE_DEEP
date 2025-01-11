@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import static java.lang.Math.abs;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -61,6 +63,12 @@ public class MasterMode extends OpMode {
 
         } else {
             armPivot.moveToPosition(0);
+        }
+
+        if(abs(gamepad1.left_stick_y)>0.1){
+            armPivot.setPower(-gamepad1.left_stick_y);
+        } else {
+            armPivot.holdPivot();
         }
 
         mecanumDrive.drive(-gamepad2.left_stick_y*.75, gamepad2.left_stick_x*.75, -gamepad2.right_stick_x*.75);
