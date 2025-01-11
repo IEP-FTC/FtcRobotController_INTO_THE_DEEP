@@ -58,18 +58,31 @@ public class MasterMode extends OpMode {
             aPressed = false;          // Reset flag when button is released
         }
 
-        if (toggleState) {
-            armPivot.moveToPosition(PIVOTANGLE);//TODO adjust angle to correct (<110)
+//        if (toggleState) {
+//            armPivot.moveToPosition(PIVOTANGLE);//TODO adjust angle to correct (<110)
+//
+//        } else {
+//            armPivot.moveToPosition(0);
+//        }
 
-        } else {
-            armPivot.moveToPosition(0);
-        }
+       if(gamepad1.a){
+           armPivot.moveToPosition(PIVOTANGLE);
+       }
+       if(gamepad1.y){
+           armPivot.moveToPosition(0);
+       }
 
-        if(abs(gamepad1.left_stick_y)>0.1){
+       if(abs(gamepad1.left_stick_y)>0.1){
             armPivot.setPower(-gamepad1.left_stick_y);
         } else {
             armPivot.holdPivot();
         }
+
+
+       if(gamepad2.x){
+           armPivot.climb();
+       }
+
 
         mecanumDrive.drive(-gamepad2.left_stick_y*.75, gamepad2.left_stick_x*.75, -gamepad2.right_stick_x*.75);
 

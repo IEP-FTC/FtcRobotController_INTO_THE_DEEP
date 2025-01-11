@@ -22,6 +22,8 @@ public class ArmPivot {
         pivotRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void moveToPosition(int degrees ) {
+        pivotLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        pivotRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         int  targetPosition = ((degrees*125)/30)/(360/288);//125 = big gear, 30 = small gear, 360/288 = tick ratio
         pivotLeft.setTargetPosition(targetPosition);
         pivotRight.setTargetPosition(targetPosition);
@@ -47,7 +49,19 @@ public class ArmPivot {
 
     public void setPower(double power){
         power = power/2;
+        pivotLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pivotRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         pivotLeft.setPower(power);
         pivotRight.setPower(power);
+
+    }
+
+    public void climb(){
+        pivotLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        pivotRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        pivotLeft.setTargetPosition(0);
+        pivotRight.setTargetPosition(0);
+        pivotLeft.setPower(1);
+        pivotRight.setPower(1);
     }
 }
