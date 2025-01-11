@@ -30,8 +30,8 @@ public class ArmPivot {
         if (targetPosition > currentPosition) {
             pivotLeft.setTargetPosition(targetPosition);
             pivotRight.setTargetPosition(targetPosition);
-            pivotLeft.setPower(0.6);
-            pivotRight.setPower(0.6);
+            pivotLeft.setPower(0.5);
+            pivotRight.setPower(0.5);
         } else {
             pivotLeft.setTargetPosition(targetPosition);
             pivotRight.setTargetPosition(targetPosition);

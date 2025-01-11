@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @Config
 @TeleOp
 public class MasterMode extends OpMode {
-    public static int PIVOTANGLE = 75;
+    public static int PIVOTANGLE = 85;
     Intake intake = new Intake();
     ArmPivot armPivot = new ArmPivot();
     Slide slide = new Slide();
@@ -63,7 +63,7 @@ public class MasterMode extends OpMode {
             armPivot.moveToPosition(0);
         }
 
-        mecanumDrive.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        mecanumDrive.drive(-gamepad2.left_stick_y*.75, gamepad2.left_stick_x*.75, -gamepad2.right_stick_x*.75);
 
     }
 }

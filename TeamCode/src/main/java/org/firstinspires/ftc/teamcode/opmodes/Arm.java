@@ -57,7 +57,7 @@ public class Arm extends OpMode {
         }
 
         if (toggleState) {
-            armPivot.moveToPosition(PIVOTANGLE);//TODO adjust angle to correct (<110)
+            armPivot.moveToPosition(PIVOTANGLE);
 
         } else {
             armPivot.moveToPosition(0);
