@@ -2,9 +2,13 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
-public class ParkAutonomousElias {
+@Autonomous
+public class ParkAutonomousElias extends OpMode {
     MecanumDrive mecanumDrive = new MecanumDrive();
 
     public void init() {
@@ -12,9 +16,9 @@ public class ParkAutonomousElias {
     }
 
     public void loop() {
-        mecanumDrive.drive(1, 0, 0);
+        mecanumDrive.drive(-1, 0, 0);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

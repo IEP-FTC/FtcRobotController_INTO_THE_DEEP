@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -14,13 +15,15 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @Config
 @TeleOp
 public class MasterMode extends OpMode {
-    public static int PIVOTANGLE = 75;
+    public static int PIVOTANGLE = 78;
     Intake intake = new Intake();
     ArmPivot armPivot = new ArmPivot();
     Slide slide = new Slide();
     boolean toggleState = false;
     boolean aPressed = false;
     MecanumDrive mecanumDrive = new MecanumDrive();
+
+    double joystickArmPosition = 0;
 
     @Override
     public void init() {
@@ -67,17 +70,25 @@ public class MasterMode extends OpMode {
 
        if(gamepad1.a){
            armPivot.moveToPosition(PIVOTANGLE);
+           joystickArmPosition = PIVOTANGLE;
        }
        if(gamepad1.y){
            armPivot.moveToPosition(0);
+           joystickArmPosition = 0;
        }
 
        if(abs(gamepad1.left_stick_y)>0.1){
-            armPivot.setPower(-gamepad1.left_stick_y);
-        } else {
-            armPivot.holdPivot();
-        }
+            joystickArmPosition += -gamepad1.left_stick_y/5;
+            armPivot.moveToPosition((int)joystickArmPosition);
+       } else {
+           armPivot.holdPivot();
+       }
 
+       if(joystickArmPosition>PIVOTANGLE){
+           joystickArmPosition = PIVOTANGLE;
+       } else if(joystickArmPosition<0){
+           joystickArmPosition = 0;
+       }
 
        if(gamepad2.x){
            armPivot.climb();

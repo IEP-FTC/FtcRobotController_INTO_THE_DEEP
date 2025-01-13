@@ -40,20 +40,12 @@ public class ArmPivot {
             pivotLeft.setPower(0.25);
             pivotRight.setPower(0.25);
         }
+
         holdPivot();
     }
     public void holdPivot(){
         pivotLeft.setPower(1);
         pivotRight.setPower(1);
-    }
-
-    public void setPower(double power){
-        power = power/2;
-        pivotLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        pivotRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        pivotLeft.setPower(power);
-        pivotRight.setPower(power);
-
     }
 
     public void climb(){
