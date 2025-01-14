@@ -73,8 +73,8 @@ public class MasterMode extends OpMode {
            joystickArmPosition = PIVOTANGLE;
        }
        if(gamepad1.y){
-           armPivot.moveToPosition(0);
-           joystickArmPosition = 0;
+           armPivot.moveToPosition(3);
+           joystickArmPosition = 3;
        }
 
        if(abs(gamepad1.left_stick_y)>0.1){
