@@ -22,10 +22,11 @@ public class Auto extends OpMode {
         HANG_SPECIMEN,
         YELLOW_SAMPLES,
         FORWARD,
-        STOP
+        Park, STOP
     }
 
     private AutoSteps step = AutoSteps.BACK_TO_SUBMERSIBLE;
+    boolean drive1 = true;
 
     @Override
     public void init(){
@@ -57,6 +58,35 @@ public class Auto extends OpMode {
                 step = AutoSteps.YELLOW_SAMPLES;
 
             case YELLOW_SAMPLES:
+                armPivot.moveToPosition(-150);
+                step = AutoSteps.Park;
+
+            case Park:
+                if (drive1) {
+                    mDrive.drive(1,0,0);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    drive1 = false;
+                } else {
+                    mDrive.drive(0, -1,0);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    mDrive.stop();
+                }
+
+                //move backwards to obzone
+
+                //see apriltag? or do we just move?
+                //add a rotate function to see an april tag
+                // rotate to the right 90 degrees
+                //then see the tag and use that to position to move block
         }
         //Step 1: Hang Specimen
             // Start facing wall?
