@@ -16,7 +16,7 @@ public class Slide {
     public void runSlide (boolean extend, double power) { //TODO limit slide extension&retraction length with motor ticks (run using encoder)
         int position = slideMotor.getCurrentPosition();
         if (extend) {
-            if (position <= 1000) {
+            if (position <= 12.5 * 288) {
                 slideMotor.setPower(power);
             } else {
                 stopSlide();
