@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
-@Autonomous
+@Autonomous(preselectTeleOp = "MasterMode")
 public class ParkAutonomousElias extends OpMode {
     MecanumDrive mecanumDrive = new MecanumDrive();
 
@@ -22,6 +22,12 @@ public class ParkAutonomousElias extends OpMode {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        mecanumDrive.drive(0, 0, 0);
+        mecanumDrive.stop();
+
+
+    }
+
+    public void stop(){
+        mecanumDrive.stop();
     }
 }
