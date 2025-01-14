@@ -7,15 +7,26 @@ public class Slide {
     private DcMotor slideMotor;
 
     public void init(HardwareMap hwMap) {
-
         slideMotor = hwMap.get(DcMotor.class, "Slide 1");
     }
 
+    public void stopSlide () {
+        slideMotor.setPower(0);
+    }
     public void runSlide (boolean extend, double power) { //TODO limit slide extension&retraction length with motor ticks (run using encoder)
+        int position = slideMotor.getCurrentPosition();
         if (extend) {
-            slideMotor.setPower(power);
+            if (position <= 1000) {
+                slideMotor.setPower(power);
+            } else {
+                stopSlide();
+            }
         } else {
-            slideMotor.setPower(-power);
+            if (position >= 0) {
+                slideMotor.setPower(-power);
+            } else {
+                stopSlide();
+            }
         }
     }
 

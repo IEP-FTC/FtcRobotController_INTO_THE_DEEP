@@ -50,7 +50,7 @@ public class MasterMode extends OpMode {
         } else if (gamepad1.right_trigger > .1) {
             slide.runSlide(true, gamepad1.right_trigger);
         } else {
-            slide.runSlide(true,0);
+            slide.stopSlide();
         }//TODO add full extension/retract on bumpers
 
         //ArmPivot A 110 degrees toggle
