@@ -70,17 +70,14 @@ public class MasterMode extends OpMode {
 //        }
 
        if(gamepad1.a){
-           armPivot.moveToPosition(PIVOTANGLE);
-           joystickArmPosition = PIVOTANGLE;
+           armPivot.moveToAngle(PIVOTANGLE);
        }
        if(gamepad1.y){
-           armPivot.moveToPosition(3);
-           joystickArmPosition = 3;
+           armPivot.moveToAngle(3);
        }
 
        if(abs(gamepad1.left_stick_y)>0.1){
-            joystickArmPosition += -gamepad1.left_stick_y/5;
-            armPivot.moveToPosition((int)joystickArmPosition);
+           armPivot.moveToAngle(armPivot.getTargetAngle()-gamepad1.left_stick_y/2);
        } else {
            armPivot.holdPivot();
        }
@@ -91,9 +88,7 @@ public class MasterMode extends OpMode {
            joystickArmPosition = 0;
        }
 
-       if(gamepad2.x){
-           armPivot.climb();
-       }
+
 
 
         mecanumDrive.drive(-gamepad2.left_stick_y*.75, gamepad2.left_stick_x*.75, -gamepad2.right_stick_x*.75);
