@@ -17,7 +17,6 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 import java.util.List;
 
 
-@Disabled
 @Autonomous
 public class SimpleAprilTags extends OpMode {
     private AprilTagProcessor aprilTagProcessor;

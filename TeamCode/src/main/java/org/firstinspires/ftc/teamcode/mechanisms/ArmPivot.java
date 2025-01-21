@@ -12,6 +12,10 @@ public class ArmPivot {
         pivotLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         pivotRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        pivotLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        pivotRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
         pivotLeft.setDirection(DcMotor.Direction.REVERSE);
 
         pivotLeft.setTargetPosition(0);
@@ -44,8 +48,8 @@ public class ArmPivot {
         holdPivot();
     }
     public void holdPivot(){
-        pivotLeft.setPower(1);
-        pivotRight.setPower(1);
+        pivotLeft.setPower(0); //Testing Set Power 0 to break.
+        pivotRight.setPower(0);
     }
 
     public void climb(){

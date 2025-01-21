@@ -17,14 +17,6 @@ public class ParkAutonomousElias extends OpMode {
 
     public void loop() {
         mecanumDrive.drive(-1, 0, 0);
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        mecanumDrive.stop();
-
-
     }
 
     public void stop(){

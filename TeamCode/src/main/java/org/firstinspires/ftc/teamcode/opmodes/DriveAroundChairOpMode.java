@@ -131,7 +131,7 @@ public class DriveAroundChairOpMode extends OpMode {
                 }
                 break;
             case STRAFE_LEFT:
-                mecanumDrive.driveGyroCorrected(0,-.3 ,0);
+                //mecanumDrive.driveGyroCorrected(0,-.3 ,0);
                 if(tag11Range>1){
                     step = AutoSteps.FORWARD;
                     mecanumDrive.drive(0,0,0);

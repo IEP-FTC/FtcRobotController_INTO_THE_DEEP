@@ -9,15 +9,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.Slide;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
 @Config
 @TeleOp
 public class MasterMode extends OpMode {
-    public static int PIVOTANGLE = 78;
+    public static int PIVOTANGLE = 160;
     Intake intake = new Intake();
-    ArmPivot armPivot = new ArmPivot();
+    PIDFArmPivot armPivot = new PIDFArmPivot();
     Slide slide = new Slide();
     boolean toggleState = false;
     boolean aPressed = false;
