@@ -5,9 +5,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Slide {
     private DcMotor slideMotor;
+    private int slidePosition;
 
     public void init(HardwareMap hwMap) {
         slideMotor = hwMap.get(DcMotor.class, "Slide 1");
+        slideMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public void stopSlide () {
@@ -15,15 +17,16 @@ public class Slide {
     }
     public void runSlide (boolean extend, double power) { //TODO limit slide extension&retraction length with motor ticks (run using encoder)
         int position = slideMotor.getCurrentPosition();
+        slidePosition = position;
         if (extend) {
-            if (position <= 6.25 * 288) {
-                slideMotor.setPower(-power);
+            if (position <= 1800-10) {
+                slideMotor.setPower(power);
             } else {
                 stopSlide();
             }
         } else {
-            if (position >= 0) {
-                slideMotor.setPower(power);
+            if (position >= 20) {
+                slideMotor.setPower(-power);
             } else {
                 stopSlide();
             }
@@ -34,6 +37,9 @@ public class Slide {
         int  targetPosition = inches*(288/3); //Figure out equation for inches/ticks
         slideMotor.setTargetPosition(targetPosition);
 
+    }
+    public int getSlidePosition(){
+        return slidePosition;
     }
 
     //TODO new function to fully extend/retract slide at full power (from any point)
