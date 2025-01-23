@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -20,11 +22,12 @@ public class MasterMode extends OpMode {
     Intake intake = new Intake();
     PIDFArmPivot armPivot = new PIDFArmPivot();
     Slide slide = new Slide();
-    boolean toggleState = false;
-    boolean aPressed = false;
+    boolean toggleA = false, aPressed = false;
+    boolean toggleY = false, yPressed = false;
+
     MecanumDrive mecanumDrive = new MecanumDrive();
 
-    double joystickArmPosition = 0;
+    double joystickTargetPosition;
 
     @Override
     public void init() {
@@ -32,6 +35,8 @@ public class MasterMode extends OpMode {
         armPivot.init(hardwareMap);
         slide.init(hardwareMap);
         mecanumDrive.init(hardwareMap);
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
     }
     @Override
     public void loop() {
@@ -55,49 +60,91 @@ public class MasterMode extends OpMode {
         }//TODO add full extension/retract on bumpers
 
         //ArmPivot A 110 degrees toggle
+//        if (gamepad1.a && !aPressed) {
+//            toggleState = !toggleState; // Toggle state
+//            aPressed = true;           // Set flag to prevent retrigger
+//        } else if (!gamepad1.a) {
+//            aPressed = false;          // Reset flag when button is released
+//        }
+
+//        if (toggleState) {
+//            armPivot.moveToAngle(PIVOTANGLE);//TODO adjust angle to correct (<110)
+//
+//        } else {
+//            armPivot.moveToAngle(armPivot.armRestAngle+3);
+//        }
+
+//       if(gamepad1.a){
+//           armPivot.moveToAngle(PIVOTANGLE);
+//       }
+//       if(gamepad1.y){
+//           armPivot.moveToAngle(armPivot.armRestAngle+3);
+//       }
+
+//       if(abs(gamepad1.left_stick_y)>0.1){
+//           joystickArmPosition=armPivot.getTargetAngle()-gamepad1.left_stick_y/2;
+//           if(joystickArmPosition>PIVOTANGLE){
+//               joystickArmPosition = PIVOTANGLE;
+//           } else if(joystickArmPosition<armPivot.armRestAngle){
+//               joystickArmPosition = armPivot.armRestAngle;
+//           }
+//           armPivot.moveToAngle(joystickArmPosition);
+//       } else {
+//           armPivot.holdPivot();
+//       }
+
+        //Pivot Arm Control
+
         if (gamepad1.a && !aPressed) {
-            toggleState = !toggleState; // Toggle state
+            toggleA = !toggleA; // Toggle state
             aPressed = true;           // Set flag to prevent retrigger
+            toggleY=false;
         } else if (!gamepad1.a) {
             aPressed = false;          // Reset flag when button is released
         }
 
-//        if (toggleState) {
-//            armPivot.moveToPosition(PIVOTANGLE);//TODO adjust angle to correct (<110)
-//
-//        } else {
-//            armPivot.moveToPosition(0);
-//        }
+        if (gamepad1.y && !yPressed) {
+            toggleY = !toggleY; // Toggle state
+            yPressed = true;// Set flag to prevent retrigger
+            toggleA=false;
+        } else if (!gamepad1.y) {
+            yPressed = false;          // Reset flag when button is released
+        }
 
-       if(gamepad1.a){
-           armPivot.moveToPosition(PIVOTANGLE);
-           joystickArmPosition = PIVOTANGLE;
-       }
-       if(gamepad1.y){
-           armPivot.moveToPosition(3);
-           joystickArmPosition = 3;
+        if (toggleA) {
+            armPivot.moveToAngle(PIVOTANGLE);
+            toggleY=false;
+        }
+
+        if (toggleY) {
+            armPivot.moveToAngle(armPivot.armRestAngle+5);
+            toggleA=false;
+        }
+
+        if(abs(gamepad1.left_stick_y)>0.1){
+            toggleA=false;
+            toggleY=false;
+            joystickTargetPosition=armPivot.getTargetAngle();
+            if(joystickTargetPosition>PIVOTANGLE){
+               joystickTargetPosition = PIVOTANGLE;
+            } else if(joystickTargetPosition<armPivot.armRestAngle){
+               joystickTargetPosition = armPivot.armRestAngle;
+            }
+            armPivot.moveToAngle(joystickTargetPosition);
        }
 
-       if(abs(gamepad1.left_stick_y)>0.1){
-            joystickArmPosition += -gamepad1.left_stick_y/5;
-            armPivot.moveToPosition((int)joystickArmPosition);
-       } else {
-           armPivot.holdPivot();
-       }
+        telemetry.addData("ToggleA", toggleA);
+        telemetry.addData("ToggleY", toggleY);
+        telemetry.addData("aPressed", aPressed);
+        telemetry.addData("yPressed", yPressed);
+        telemetry.addData("Joystick", joystickTargetPosition);
+        armPivot.addTelemetry(telemetry);
 
-       if(joystickArmPosition>PIVOTANGLE){
-           joystickArmPosition = PIVOTANGLE;
-       } else if(joystickArmPosition<0){
-           joystickArmPosition = 0;
-       }
 
-       if(gamepad2.x){
-           armPivot.climb();
-       }
 
 
         mecanumDrive.drive(-gamepad2.left_stick_y*.75, gamepad2.left_stick_x*.75, -gamepad2.right_stick_x*.75);
-
+        telemetry.update();
     }
 }
 

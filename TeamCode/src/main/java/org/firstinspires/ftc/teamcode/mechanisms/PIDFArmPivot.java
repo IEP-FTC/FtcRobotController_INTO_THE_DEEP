@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.libraries.PIDFController;
 public class PIDFArmPivot {
     private DcMotor pivotLeft, pivotRight;
     private PIDFController pidfController;
-    public double currentAngle,targetA,power;
+    public double currentAngle=65,targetA=65,power;
     public static double armRestAngle=65;
     public static double kP=0.1, kI=0.01, kD=0.003, kF=0.15;
 
@@ -39,7 +39,7 @@ public class PIDFArmPivot {
     }
 
     public void moveToAngle(double targetAngle) {
-        this.targetA = targetAngle;
+        targetA = targetAngle;
         // Get the current position of the arm
         currentAngle = ticksToArmDegrees(pivotLeft.getCurrentPosition())+armRestAngle;
         //For tuning purposes, update coeficients
@@ -52,6 +52,10 @@ public class PIDFArmPivot {
         pivotLeft.setPower(power);
         pivotRight.setPower(power);
 
+    }
+
+    public double getTargetAngle(){
+        return targetA;
     }
 
     public void holdPivot() {
