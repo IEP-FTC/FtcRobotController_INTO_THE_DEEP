@@ -38,7 +38,7 @@ public class AutonomousSample extends OpMode{
                     mecanumDrive.drive(-1,0,0);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.RotateAndExtend
+                    step = Steps.RotateAndExtend;
                 }
             case RotateAndExtend:
                 mecanumDrive.drive(0,0,1); //TEST do we need to change this?
