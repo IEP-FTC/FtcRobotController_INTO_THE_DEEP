@@ -39,7 +39,7 @@ public class AutonomousSpecimen extends OpMode {
                     throw new RuntimeException(e);
                 }
                 if(!touchSensor.getState()) {
-                    mecanumDrive.drive(1, 0, 0);
+                    mecanumDrive.drive(-1, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.Extend;
@@ -53,10 +53,7 @@ public class AutonomousSpecimen extends OpMode {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                //TEST edit the angle on this
-                //rotate the arm to an angle so as to put the thing on
-                //is extension required? test
-                //stop the movement before moving on via if else statement
+
                 step = Steps.Hook;
                 break;
             case Hook:
