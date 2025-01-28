@@ -4,20 +4,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
-import org.firstinspires.ftc.teamcode.mechanisms.ArmPivot;
+import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
 @Autonomous(preselectTeleOp = "MasterMode")
 public class AutonomousSpecimen extends OpMode {
     MecanumDrive mecanumDrive = new MecanumDrive();
-    ArmPivot armPivot = new ArmPivot();
+    PIDFArmPivot armPivot = new PIDFArmPivot();
     private DigitalChannel touchSensor;
     private enum Steps{
         DriveBackward,
         Extend,
         Hook,
         NetZone
-
     }
     private Steps step = Steps.DriveBackward;
 
@@ -40,9 +39,16 @@ public class AutonomousSpecimen extends OpMode {
                 }
 
             case Extend:
-                armPivot.moveToPosition(90); //TEST edit the angle on this
+                armPivot.moveToAngle(90);
+                try {
+                    Thread.sleep(500); //TEST edit the timing on this
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                //TEST edit the angle on this
                 //rotate the arm to an angle so as to put the thing on
                 //is extension required? test
+                //stop the movement before moving on via if else statement
                 step = Steps.Hook;
             case Hook:
                 mecanumDrive.drive(1,0,0);
