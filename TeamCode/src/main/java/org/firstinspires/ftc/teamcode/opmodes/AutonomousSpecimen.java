@@ -32,15 +32,22 @@ public class AutonomousSpecimen extends OpMode {
     public void loop(){
         switch(step){
             case DriveBackward:
+                armPivot.moveToAngle(116);
+                try {
+                    Thread.sleep(5000); //TEST edit the timing on this
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 if(!touchSensor.getState()) {
                     mecanumDrive.drive(1, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.Extend;
                 }
+                break;
 
             case Extend:
-                armPivot.moveToAngle(90);
+                armPivot.moveToAngle(127);
                 try {
                     Thread.sleep(500); //TEST edit the timing on this
                 } catch (InterruptedException e) {
@@ -51,6 +58,7 @@ public class AutonomousSpecimen extends OpMode {
                 //is extension required? test
                 //stop the movement before moving on via if else statement
                 step = Steps.Hook;
+                break;
             case Hook:
                 mecanumDrive.drive(1,0,0);
                 try {
@@ -60,6 +68,7 @@ public class AutonomousSpecimen extends OpMode {
                 }
                 mecanumDrive.stop();
                 step = Steps.NetZone;
+                break;
             case NetZone:
                 mecanumDrive.drive(1,0,0);
                 try {
@@ -74,6 +83,7 @@ public class AutonomousSpecimen extends OpMode {
                     throw new RuntimeException(e);
                 }
                 mecanumDrive.stop();
+                break;
 
 
 
