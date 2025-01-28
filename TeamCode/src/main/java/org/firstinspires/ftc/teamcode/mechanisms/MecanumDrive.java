@@ -109,4 +109,7 @@ public class MecanumDrive {
         pidDrive(forward, 0, rotate);
 
     }
+    public double ticksToDriveRotations(double ticks) {
+        return ticks/288;
+    }
 }
