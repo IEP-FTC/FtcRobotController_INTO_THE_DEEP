@@ -57,6 +57,9 @@ public class PIDFArmPivot {
     public double getTargetAngle(){
         return targetA;
     }
+    public double getCurrentAngle(){
+        return currentAngle;
+    }
 
     public void holdPivot() {
         pivotLeft.setPower(0);

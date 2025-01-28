@@ -3,15 +3,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
-import org.firstinspires.ftc.teamcode.mechanisms.ArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
+import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.Slide;
 
 
 @Autonomous(preselectTeleOp = "MasterMode")
 public class AutonomousSample extends OpMode{
     MecanumDrive mecanumDrive = new MecanumDrive();
-    ArmPivot armPivot = new ArmPivot();
+    PIDFArmPivot armPivot = new PIDFArmPivot();
     Slide slide = new Slide();
     private DigitalChannel touchSensor;
     private enum Steps{

@@ -12,6 +12,7 @@ public class AutonomousSpecimen extends OpMode {
     MecanumDrive mecanumDrive = new MecanumDrive();
     ArmPivot armPivot = new ArmPivot();
     private DigitalChannel touchSensor;
+
     private enum Steps{
         DriveBackward,
         Extend,
@@ -33,7 +34,7 @@ public class AutonomousSpecimen extends OpMode {
         switch(step){
             case DriveBackward:
                 if(!touchSensor.getState()) {
-                    mecanumDrive.drive(-1, 0, 0);
+                    mecanumDrive.drive(1, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.Extend;

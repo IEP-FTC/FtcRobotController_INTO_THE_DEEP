@@ -18,7 +18,8 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @Config
 @TeleOp
 public class MasterMode extends OpMode {
-    public static int PIVOTANGLE = 160;
+    public static int MAXPIVOTANGLE = 160;
+    public static double TARGETANGLE;
     Intake intake = new Intake();
     PIDFArmPivot armPivot = new PIDFArmPivot();
     Slide slide = new Slide();
@@ -33,11 +34,12 @@ public class MasterMode extends OpMode {
     public void init() {
         intake.init(hardwareMap);
         armPivot.init(hardwareMap);
+        TARGETANGLE=armPivot.armRestAngle;
         slide.init(hardwareMap);
         mecanumDrive.init(hardwareMap);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
     }
+
     @Override
     public void loop() {
 
@@ -95,49 +97,59 @@ public class MasterMode extends OpMode {
 
         //Pivot Arm Control
 
-        if (gamepad1.a && !aPressed) {
-            toggleA = !toggleA; // Toggle state
-            aPressed = true;           // Set flag to prevent retrigger
-            toggleY=false;
-        } else if (!gamepad1.a) {
-            aPressed = false;          // Reset flag when button is released
+//        if (gamepad1.a && !aPressed) {
+//            toggleA = !toggleA; // Toggle state
+//            aPressed = true;           // Set flag to prevent retrigger
+//            toggleY=false;
+//        } else if (!gamepad1.a) {
+//            aPressed = false;          // Reset flag when button is released
+//        }
+//
+//        if (gamepad1.y && !yPressed) {
+//            toggleY = !toggleY; // Toggle state
+//            yPressed = true;// Set flag to prevent retrigger
+//            toggleA=false;
+//        } else if (!gamepad1.y) {
+//            yPressed = false;          // Reset flag when button is released
+//        }
+//
+//        if (toggleA) {
+//            armPivot.moveToAngle(PIVOTANGLE);
+//            toggleY=false;
+//        }
+//
+//        if (toggleY) {
+//            armPivot.moveToAngle(armPivot.armRestAngle+5);
+//            toggleA=false;
+//        }
+//
+//        if(abs(gamepad1.left_stick_y)>0.1){
+//            toggleA=false;
+//            toggleY=false;
+//            joystickTargetPosition=armPivot.getTargetAngle();
+//            if(joystickTargetPosition>PIVOTANGLE){
+//               joystickTargetPosition = PIVOTANGLE;
+//            } else if(joystickTargetPosition<armPivot.armRestAngle){
+//               joystickTargetPosition = armPivot.armRestAngle;
+//            }
+//            armPivot.moveToAngle(joystickTargetPosition);
+//       }
+
+        if(!(TARGETANGLE== armPivot.getCurrentAngle())){
+            armPivot.moveToAngle(TARGETANGLE);
         }
 
-        if (gamepad1.y && !yPressed) {
-            toggleY = !toggleY; // Toggle state
-            yPressed = true;// Set flag to prevent retrigger
-            toggleA=false;
-        } else if (!gamepad1.y) {
-            yPressed = false;          // Reset flag when button is released
+        if(gamepad1.a){
+            TARGETANGLE=MAXPIVOTANGLE;
+        }
+        if(gamepad1.y){
+            TARGETANGLE=armPivot.armRestAngle+5;
+        }
+        if(gamepad1.left_stick_y>.05){
+            TARGETANGLE+=gamepad1.left_stick_y/2;
         }
 
-        if (toggleA) {
-            armPivot.moveToAngle(PIVOTANGLE);
-            toggleY=false;
-        }
 
-        if (toggleY) {
-            armPivot.moveToAngle(armPivot.armRestAngle+5);
-            toggleA=false;
-        }
-
-        if(abs(gamepad1.left_stick_y)>0.1){
-            toggleA=false;
-            toggleY=false;
-            joystickTargetPosition=armPivot.getTargetAngle();
-            if(joystickTargetPosition>PIVOTANGLE){
-               joystickTargetPosition = PIVOTANGLE;
-            } else if(joystickTargetPosition<armPivot.armRestAngle){
-               joystickTargetPosition = armPivot.armRestAngle;
-            }
-            armPivot.moveToAngle(joystickTargetPosition);
-       }
-
-        telemetry.addData("ToggleA", toggleA);
-        telemetry.addData("ToggleY", toggleY);
-        telemetry.addData("aPressed", aPressed);
-        telemetry.addData("yPressed", yPressed);
-        telemetry.addData("Joystick", joystickTargetPosition);
         armPivot.addTelemetry(telemetry);
 
 
