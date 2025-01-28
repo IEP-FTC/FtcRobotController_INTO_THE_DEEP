@@ -14,6 +14,7 @@ public class AutonomousSpecimen extends OpMode {
     private DigitalChannel touchSensor;
 
     private enum Steps{
+        SetAngle,
         DriveBackward,
         Extend,
         Hook,
@@ -31,31 +32,32 @@ public class AutonomousSpecimen extends OpMode {
 
     public void loop(){
         switch(step){
-            case DriveBackward:
+            case SetAngle:
                 armPivot.moveToAngle(116);
-                try {
-                    Thread.sleep(5000); //TEST edit the timing on this
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()){
+                    step = Steps.DriveBackward;
+                    break;
                 }
-                if(!touchSensor.getState()) {
-                    mecanumDrive.drive(1, 0, 0);
-                } else {
-                    mecanumDrive.stop();
-                    step = Steps.Extend;
-                }
-                break;
+            case DriveBackward:
 
-            case Extend:
-                armPivot.moveToAngle(127);
+
+                mecanumDrive.drive(1, 0, 0);
                 try {
                     Thread.sleep(500); //TEST edit the timing on this
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-
-                step = Steps.Hook;
+                mecanumDrive.stop();
+                step = Steps.Extend;
                 break;
+
+            case Extend:
+                armPivot.moveToAngle(127);
+                if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()){
+                    step = Steps.Hook;
+                    break;
+                }
+
             case Hook:
                 mecanumDrive.drive(-1,0,0);
                 try {
@@ -64,7 +66,7 @@ public class AutonomousSpecimen extends OpMode {
                     throw new RuntimeException(e);
                 }
                 mecanumDrive.stop();
-                step = Steps.NetZone;
+                //step = Steps.NetZone;
                 break;
             case NetZone:
                 mecanumDrive.drive(1,0,0);
@@ -81,6 +83,9 @@ public class AutonomousSpecimen extends OpMode {
                 }
                 mecanumDrive.stop();
                 break;
+
+
+
 
 
 
