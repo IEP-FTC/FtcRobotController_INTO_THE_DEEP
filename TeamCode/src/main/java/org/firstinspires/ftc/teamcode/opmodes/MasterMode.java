@@ -23,12 +23,9 @@ public class MasterMode extends OpMode {
     Intake intake = new Intake();
     PIDFArmPivot armPivot = new PIDFArmPivot();
     Slide slide = new Slide();
-    boolean toggleA = false, aPressed = false;
-    boolean toggleY = false, yPressed = false;
 
     MecanumDrive mecanumDrive = new MecanumDrive();
 
-    double joystickTargetPosition;
 
     @Override
     public void init() {
@@ -61,80 +58,6 @@ public class MasterMode extends OpMode {
             slide.stopSlide();
         }//TODO add full extension/retract on bumpers
 
-        //ArmPivot A 110 degrees toggle
-//        if (gamepad1.a && !aPressed) {
-//            toggleState = !toggleState; // Toggle state
-//            aPressed = true;           // Set flag to prevent retrigger
-//        } else if (!gamepad1.a) {
-//            aPressed = false;          // Reset flag when button is released
-//        }
-
-//        if (toggleState) {
-//            armPivot.moveToAngle(PIVOTANGLE);//TODO adjust angle to correct (<110)
-//
-//        } else {
-//            armPivot.moveToAngle(armPivot.armRestAngle+3);
-//        }
-
-//       if(gamepad1.a){
-//           armPivot.moveToAngle(PIVOTANGLE);
-//       }
-//       if(gamepad1.y){
-//           armPivot.moveToAngle(armPivot.armRestAngle+3);
-//       }
-
-//       if(abs(gamepad1.left_stick_y)>0.1){
-//           joystickArmPosition=armPivot.getTargetAngle()-gamepad1.left_stick_y/2;
-//           if(joystickArmPosition>PIVOTANGLE){
-//               joystickArmPosition = PIVOTANGLE;
-//           } else if(joystickArmPosition<armPivot.armRestAngle){
-//               joystickArmPosition = armPivot.armRestAngle;
-//           }
-//           armPivot.moveToAngle(joystickArmPosition);
-//       } else {
-//           armPivot.holdPivot();
-//       }
-
-        //Pivot Arm Control
-
-//        if (gamepad1.a && !aPressed) {
-//            toggleA = !toggleA; // Toggle state
-//            aPressed = true;           // Set flag to prevent retrigger
-//            toggleY=false;
-//        } else if (!gamepad1.a) {
-//            aPressed = false;          // Reset flag when button is released
-//        }
-//
-//        if (gamepad1.y && !yPressed) {
-//            toggleY = !toggleY; // Toggle state
-//            yPressed = true;// Set flag to prevent retrigger
-//            toggleA=false;
-//        } else if (!gamepad1.y) {
-//            yPressed = false;          // Reset flag when button is released
-//        }
-//
-//        if (toggleA) {
-//            armPivot.moveToAngle(PIVOTANGLE);
-//            toggleY=false;
-//        }
-//
-//        if (toggleY) {
-//            armPivot.moveToAngle(armPivot.armRestAngle+5);
-//            toggleA=false;
-//        }
-//
-//        if(abs(gamepad1.left_stick_y)>0.1){
-//            toggleA=false;
-//            toggleY=false;
-//            joystickTargetPosition=armPivot.getTargetAngle();
-//            if(joystickTargetPosition>PIVOTANGLE){
-//               joystickTargetPosition = PIVOTANGLE;
-//            } else if(joystickTargetPosition<armPivot.armRestAngle){
-//               joystickTargetPosition = armPivot.armRestAngle;
-//            }
-//            armPivot.moveToAngle(joystickTargetPosition);
-//       }
-
         if(!(TARGETANGLE== armPivot.getCurrentAngle())){
             armPivot.moveToAngle(TARGETANGLE);
         }
@@ -145,10 +68,15 @@ public class MasterMode extends OpMode {
         if(gamepad1.y){
             TARGETANGLE=armPivot.armRestAngle+5;
         }
-        if(gamepad1.left_stick_y>.05){
-            TARGETANGLE+=gamepad1.left_stick_y/2;
+        if(abs(gamepad1.left_stick_y)>.05){
+            TARGETANGLE+=-gamepad1.left_stick_y/2;
         }
-
+        if(TARGETANGLE>MAXPIVOTANGLE){
+            TARGETANGLE=MAXPIVOTANGLE;
+        }
+        if(TARGETANGLE<armPivot.armRestAngle){
+            TARGETANGLE=armPivot.armRestAngle;
+        }
 
         armPivot.addTelemetry(telemetry);
 
