@@ -39,7 +39,7 @@ public class AutonomousSpecimen extends OpMode {
                     throw new RuntimeException(e);
                 }
                 if(!touchSensor.getState()) {
-                    mecanumDrive.drive(-1, 0, 0);
+                    mecanumDrive.drive(1, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.Extend;
@@ -57,7 +57,7 @@ public class AutonomousSpecimen extends OpMode {
                 step = Steps.Hook;
                 break;
             case Hook:
-                mecanumDrive.drive(1,0,0);
+                mecanumDrive.drive(-1,0,0);
                 try {
                     Thread.sleep(500); //TEST edit the timing on this
                 } catch (InterruptedException e) {
