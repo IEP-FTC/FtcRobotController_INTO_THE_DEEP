@@ -58,6 +58,10 @@ public class MasterMode extends OpMode {
             slide.stopSlide();
         }//TODO add full extension/retract on bumpers
 
+        if (gamepad2.x) {
+            slide.climb(false, gamepad2.x);
+        }
+
         if(!(TARGETANGLE== armPivot.getCurrentAngle())){
             armPivot.moveToAngle(TARGETANGLE);
         }
@@ -79,9 +83,6 @@ public class MasterMode extends OpMode {
         }
 
         armPivot.addTelemetry(telemetry);
-
-
-
 
         mecanumDrive.drive(-gamepad2.left_stick_y*.75, gamepad2.left_stick_x*.75, -gamepad2.right_stick_x*.75);
         telemetry.update();
