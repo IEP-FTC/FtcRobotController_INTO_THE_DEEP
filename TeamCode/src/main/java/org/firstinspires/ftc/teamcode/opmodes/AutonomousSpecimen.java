@@ -15,12 +15,15 @@ public class AutonomousSpecimen extends OpMode {
 
     private enum Steps{
         SetAngle,
-        DriveBackward,
+        DriveForward,
         Extend,
         Hook,
-        NetZone
+        Repeat,
+        ObservationZone
     }
-    private Steps step = Steps.DriveBackward;
+    private Steps step = Steps.SetAngle;
+
+    boolean doneOnce = false;
 
     public void init(){
         mecanumDrive.init(hardwareMap);
@@ -29,18 +32,25 @@ public class AutonomousSpecimen extends OpMode {
         touchSensor.setMode(DigitalChannel.Mode.INPUT);
 
     }
+    /*
+    steps:
+    1. set the angle to 116 degrees and check to see whether that is true
+    2. drive forward for X seconds
+    3. set the arm angle to 127 and check
+    4. hook the specimen on by driving it backwards
+    5. (optional) go get another specimen and repeat
+    6. drive to observation zone
+    */
 
     public void loop(){
         switch(step){
             case SetAngle:
                 armPivot.moveToAngle(116);
                 if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()){
-                    step = Steps.DriveBackward;
+                    step = Steps.DriveForward;
                     break;
                 }
-            case DriveBackward:
-
-
+            case DriveForward:
                 mecanumDrive.drive(1, 0, 0);
                 try {
                     Thread.sleep(500); //TEST edit the timing on this
@@ -66,9 +76,61 @@ public class AutonomousSpecimen extends OpMode {
                     throw new RuntimeException(e);
                 }
                 mecanumDrive.stop();
-                //step = Steps.NetZone;
+                if(!doneOnce){
+                    step = Steps.Repeat;
+                } else {
+                    step = Steps.ObservationZone;
+                }
                 break;
-            case NetZone:
+
+            case Repeat:
+                mecanumDrive.drive(-1,0,0); //go backwards
+                try {
+                    Thread.sleep(500); //TEST
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                mecanumDrive.drive(0,0,1); //rotate
+                try {
+                    Thread.sleep(500); //TEST
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                mecanumDrive.drive(0,-1,0); //sideways to observation zone, maybe reuse for the parking code
+                try {
+                    Thread.sleep(500); //TEST
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                mecanumDrive.drive(1,0,0); //clip the specimen
+                try {
+                    Thread.sleep(500); //TEST
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                mecanumDrive.drive(-1,0,0); //go backwards
+                try {
+                    Thread.sleep(500); //TEST
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                mecanumDrive.drive(0,0,1); //rotate
+                try {
+                    Thread.sleep(500); //TEST edit the timing on this
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                mecanumDrive.drive(0,0,1); //right to reset to original position
+                try {
+                    Thread.sleep(500); //TEST edit the timing on this
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                doneOnce = true;
+                step = Steps.SetAngle;
+                break;
+
+            case ObservationZone:
                 mecanumDrive.drive(1,0,0);
                 try {
                     Thread.sleep(500); //TEST edit the timing on this
@@ -83,6 +145,10 @@ public class AutonomousSpecimen extends OpMode {
                 }
                 mecanumDrive.stop();
                 break;
+
+
+
+
 
 
 
