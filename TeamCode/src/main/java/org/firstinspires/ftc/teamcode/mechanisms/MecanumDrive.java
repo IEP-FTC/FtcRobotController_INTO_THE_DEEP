@@ -115,10 +115,7 @@ public class MecanumDrive {
     public int getDrivePosition(){
        return frontLeftMotor.getCurrentPosition();
     }
-    public void resetDrivePosition(){
-        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-    }
     public double getIMUHeading(){
         return imu.getHeading(AngleUnit.DEGREES);
     }

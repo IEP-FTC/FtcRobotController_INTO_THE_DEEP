@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Slide {
     private DcMotor slideMotor;
     private int slidePosition;
@@ -36,18 +38,8 @@ public class Slide {
         int position = slideMotor.getCurrentPosition();
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slidePosition = position;
-
-        runSlide(false, 1);
-
-
-    }
-    public void climb (int ticks) { //TODO limit slide extension&retraction length with motor ticks (run using encoder)
-        int position = slideMotor.getCurrentPosition();
-        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slidePosition = position;
-
-        if (slideMotor.getCurrentPosition()<ticks){
-            slideMotor.setPower(-1);
+        if(position>=1000) {
+            runSlide(false, 1);
         }
 
 
@@ -61,6 +53,9 @@ public class Slide {
     public int getSlidePosition(){
         return slidePosition;
     }
+    public void addTelemetry(Telemetry telemetry){
+        telemetry.addData("Slide Position", slidePosition);
+        telemetry.addData("Slide Power",slideMotor.getPower());
+    }
 
-    //TODO new function to fully extend/retract slide at full power (from any point)
 }

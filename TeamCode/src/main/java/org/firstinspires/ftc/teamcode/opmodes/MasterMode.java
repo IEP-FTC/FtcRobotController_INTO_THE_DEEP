@@ -68,8 +68,9 @@ public class MasterMode extends OpMode {
         }
 
         if (climbMode) {
-            slide.climb(1000);
+            slide.climb();
         }
+        slide.addTelemetry(telemetry);
 
         if(!(TARGETANGLE== armPivot.getCurrentAngle())){
             armPivot.moveToAngle(TARGETANGLE);

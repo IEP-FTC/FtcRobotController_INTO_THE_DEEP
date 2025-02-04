@@ -18,6 +18,7 @@ public class AutonomousSpecimen extends OpMode {
 
     public static int DRIVE_FORWARD_TICKS=1000;
     public double IMU_start;
+    public double drivePosition;
 
     private enum Steps{
         SetAngle,
@@ -51,13 +52,13 @@ public class AutonomousSpecimen extends OpMode {
         switch(step){
             case SetAngle:
                 armPivot.moveToAngle(117);
-                if((int)armPivot.getCurrentAngle() >= 115){
+                if((int)armPivot.getCurrentAngle() >= armPivot.getTargetAngle()-2){
                     step = Steps.DriveForward;
-                    mecanumDrive.resetDrivePosition();
+                    drivePosition= mecanumDrive.getDrivePosition();
                 }
                 break;
             case DriveForward:
-                if(mecanumDrive.getDrivePosition()<DRIVE_FORWARD_TICKS) {
+                if(mecanumDrive.getDrivePosition()<drivePosition+DRIVE_FORWARD_TICKS) {
                     mecanumDrive.drive(1, 0, 0);
                 } else {
                     mecanumDrive.stop();
@@ -69,12 +70,12 @@ public class AutonomousSpecimen extends OpMode {
                 armPivot.moveToAngle(127);
                 if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()){
                     step = Steps.Hook;
-                    mecanumDrive.resetDrivePosition();
+                    drivePosition= mecanumDrive.getDrivePosition();
                 }
                 break;
 
             case Hook:
-                if(mecanumDrive.getDrivePosition()<DRIVE_FORWARD_TICKS) {
+                if(mecanumDrive.getDrivePosition()<drivePosition+DRIVE_FORWARD_TICKS) {
                     mecanumDrive.drive(-1, 0, 0);
                 } else {
                     mecanumDrive.stop();
@@ -86,7 +87,6 @@ public class AutonomousSpecimen extends OpMode {
                 armPivot.moveToAngle(armPivot.armRestAngle);
                 if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()) {
                     step = Steps.Rotate;
-                    mecanumDrive.resetDrivePosition();
                 }
                 break;
             case Rotate:
@@ -95,12 +95,12 @@ public class AutonomousSpecimen extends OpMode {
                 } else {
                     mecanumDrive.stop();
                     step = Steps.ObservationZone;
-                    mecanumDrive.resetDrivePosition();
+                    drivePosition= mecanumDrive.getDrivePosition();
                 }
                 break;
 
             case ObservationZone:
-                if(mecanumDrive.getDrivePosition()<DRIVE_FORWARD_TICKS) {
+                if(mecanumDrive.getDrivePosition()<drivePosition+DRIVE_FORWARD_TICKS) {
                     mecanumDrive.drive(1, 0, 0);
                 } else {
                     mecanumDrive.stop();
