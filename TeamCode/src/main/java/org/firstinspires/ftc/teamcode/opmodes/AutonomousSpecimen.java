@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -7,11 +8,14 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
+@Config
 @Autonomous(preselectTeleOp = "MasterMode")
 public class AutonomousSpecimen extends OpMode {
     MecanumDrive mecanumDrive = new MecanumDrive();
     PIDFArmPivot armPivot = new PIDFArmPivot();
     private DigitalChannel touchSensor;
+
+    public static int DRIVE_FORWARD_TICKS;
 
     private enum Steps{
         SetAngle,
@@ -51,13 +55,11 @@ public class AutonomousSpecimen extends OpMode {
                     break;
                 }
             case DriveForward:
-                mecanumDrive.drive(1, 0, 0);
-                try {
-                    Thread.sleep(500); //TEST edit the timing on this
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                if(mecanumDrive.getDrivePosition()<DRIVE_FORWARD_TICKS) {
+                    mecanumDrive.drive(1, 0, 0);
+                } else {
+                    mecanumDrive.stop();
                 }
-                mecanumDrive.stop();
                 step = Steps.Extend;
                 break;
 
