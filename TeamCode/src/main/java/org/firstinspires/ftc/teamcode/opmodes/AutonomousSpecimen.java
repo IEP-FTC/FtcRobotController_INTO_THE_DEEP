@@ -16,7 +16,7 @@ public class AutonomousSpecimen extends OpMode {
     PIDFArmPivot armPivot = new PIDFArmPivot();
     private DigitalChannel touchSensor;
 
-    public static int DRIVE_FORWARD_TICKS;
+    public static int DRIVE_FORWARD_TICKS=1000;
     public double IMU_start;
 
     private enum Steps{
@@ -24,12 +24,11 @@ public class AutonomousSpecimen extends OpMode {
         DriveForward,
         Extend,
         Hook,
+        Lower_Arm,
         Rotate,
         ObservationZone
     }
     private Steps step = Steps.SetAngle;
-
-    boolean doneOnce = false;
 
     public void init(){
         mecanumDrive.init(hardwareMap);
@@ -55,37 +54,41 @@ public class AutonomousSpecimen extends OpMode {
                 if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()){
                     step = Steps.DriveForward;
                     mecanumDrive.resetDrivePosition();
-                    break;
                 }
+                break;
             case DriveForward:
                 if(mecanumDrive.getDrivePosition()<DRIVE_FORWARD_TICKS) {
                     mecanumDrive.drive(1, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.Extend;
-                    break;
                 }
+                break;
 
             case Extend:
                 armPivot.moveToAngle(127);
                 if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()){
                     step = Steps.Hook;
                     mecanumDrive.resetDrivePosition();
-                    break;
                 }
+                break;
 
             case Hook:
                 if(mecanumDrive.getDrivePosition()<DRIVE_FORWARD_TICKS) {
                     mecanumDrive.drive(-1, 0, 0);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.Rotate;
+                    step = Steps.Lower_Arm;
                     IMU_start = mecanumDrive.getIMUHeading();
-                    break;
-
                 }
-
-
+                break;
+            case Lower_Arm:
+                armPivot.moveToAngle(armPivot.armRestAngle);
+                if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()) {
+                    step = Steps.Rotate;
+                    mecanumDrive.resetDrivePosition();
+                }
+                break;
             case Rotate:
                 if(mecanumDrive.getIMUHeading()<IMU_start+90) {
                     mecanumDrive.drive(0, 0, .5);
@@ -93,28 +96,18 @@ public class AutonomousSpecimen extends OpMode {
                     mecanumDrive.stop();
                     step = Steps.ObservationZone;
                     mecanumDrive.resetDrivePosition();
-                    break;
                 }
+                break;
+
             case ObservationZone:
                 if(mecanumDrive.getDrivePosition()<DRIVE_FORWARD_TICKS) {
                     mecanumDrive.drive(1, 0, 0);
                 } else {
                     mecanumDrive.stop();
-                    break;
                 }
-
-
-
-
-
-
-
-
-
+                break;
 
         }
-
-
 
     }
 }
