@@ -50,8 +50,8 @@ public class AutonomousSpecimen extends OpMode {
     public void loop(){
         switch(step){
             case SetAngle:
-                armPivot.moveToAngle(116);
-                if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()){
+                armPivot.moveToAngle(117);
+                if((int)armPivot.getCurrentAngle() >= 115){
                     step = Steps.DriveForward;
                     mecanumDrive.resetDrivePosition();
                 }
