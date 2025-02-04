@@ -57,7 +57,7 @@ public class PIDFTuner extends OpMode {
         }
 
 
-        armPivot.addTelemetry(telemetry);
+        //armPivot.addTelemetry(telemetry);
 
         if(abs(gamepad2.left_stick_y)>abs(gamepad2.left_stick_x)){
             mecanumDrive.pidDrive(-gamepad2.left_stick_y, 0, 0);
@@ -66,7 +66,7 @@ public class PIDFTuner extends OpMode {
         } else {
             mecanumDrive.pidDrive(0,0, -gamepad2.right_stick_x * .75);
         }
-        //mecanumDrive.addTelemetry(telemetry);
+        mecanumDrive.addTelemetry(telemetry);
 
 
         telemetry.update();

@@ -36,11 +36,10 @@ public class Slide {
         int position = slideMotor.getCurrentPosition();
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slidePosition = position;
-            if (position <= 1800 - 10) {
-                runSlide(false, 1);
-            } else {
-                stopSlide();
-        }
+
+        runSlide(false, 1);
+
+
     }
 
     public void moveToPosition(int inches) {

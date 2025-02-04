@@ -23,7 +23,7 @@ public class MasterMode extends OpMode {
     Intake intake = new Intake();
     PIDFArmPivot armPivot = new PIDFArmPivot();
     Slide slide = new Slide();
-
+    public boolean climbMode = false;
     MecanumDrive mecanumDrive = new MecanumDrive();
 
 
@@ -58,8 +58,15 @@ public class MasterMode extends OpMode {
             slide.stopSlide();
         }//TODO add full extension/retract on bumpers
 
-        if (gamepad2.x) {
-            slide.climb(false, gamepad2.x);
+        if(gamepad2.x){
+            climbMode=true;
+        }
+        if(gamepad2.y){
+            climbMode=false;
+        }
+
+        if (climbMode) {
+            slide.climb();
         }
 
         if(!(TARGETANGLE== armPivot.getCurrentAngle())){
@@ -72,7 +79,7 @@ public class MasterMode extends OpMode {
         if(gamepad1.y){
             TARGETANGLE=armPivot.armRestAngle+5;
         }
-        if(abs(gamepad1.left_stick_y)>.05){
+        if(abs(gamepad1.left_stick_y)>.01){
             TARGETANGLE+=-gamepad1.left_stick_y/2;
         }
         if(TARGETANGLE>MAXPIVOTANGLE){
@@ -84,7 +91,11 @@ public class MasterMode extends OpMode {
 
         armPivot.addTelemetry(telemetry);
 
-        mecanumDrive.drive(-gamepad2.left_stick_y*.75, gamepad2.left_stick_x*.75, -gamepad2.right_stick_x*.75);
+        if(armPivot.getCurrentAngle()>90){
+            mecanumDrive.drive(-gamepad2.left_stick_y*.5, gamepad2.left_stick_x*.5, -gamepad2.right_stick_x*.5);
+        }else {
+            mecanumDrive.drive(-gamepad2.left_stick_y * .8, gamepad2.left_stick_x * .8, -gamepad2.right_stick_x * .8);
+        }
         telemetry.update();
     }
 }

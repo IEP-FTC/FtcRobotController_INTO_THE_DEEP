@@ -112,4 +112,12 @@ public class MecanumDrive {
     public double ticksToDriveRotations(double ticks) {
         return ticks/288;
     }
+
+    public int getDrivePosition(){
+       return frontLeftMotor.getCurrentPosition();
+    }
+    public void resetDrivePosition(){
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    }
 }
