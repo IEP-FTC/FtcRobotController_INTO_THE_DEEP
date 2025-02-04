@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
@@ -16,13 +17,14 @@ public class AutonomousSpecimen extends OpMode {
     private DigitalChannel touchSensor;
 
     public static int DRIVE_FORWARD_TICKS;
+    public double IMU_start;
 
     private enum Steps{
         SetAngle,
         DriveForward,
         Extend,
         Hook,
-        Repeat,
+        Rotate,
         ObservationZone
     }
     private Steps step = Steps.SetAngle;
@@ -52,6 +54,7 @@ public class AutonomousSpecimen extends OpMode {
                 armPivot.moveToAngle(116);
                 if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()){
                     step = Steps.DriveForward;
+                    mecanumDrive.resetDrivePosition();
                     break;
                 }
             case DriveForward:
@@ -59,94 +62,46 @@ public class AutonomousSpecimen extends OpMode {
                     mecanumDrive.drive(1, 0, 0);
                 } else {
                     mecanumDrive.stop();
+                    step = Steps.Extend;
+                    break;
                 }
-                step = Steps.Extend;
-                break;
 
             case Extend:
                 armPivot.moveToAngle(127);
                 if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()){
                     step = Steps.Hook;
+                    mecanumDrive.resetDrivePosition();
                     break;
                 }
 
             case Hook:
-                mecanumDrive.drive(-1,0,0);
-                try {
-                    Thread.sleep(500); //TEST edit the timing on this
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                mecanumDrive.stop();
-                if(!doneOnce){
-                    step = Steps.Repeat;
+                if(mecanumDrive.getDrivePosition()<DRIVE_FORWARD_TICKS) {
+                    mecanumDrive.drive(-1, 0, 0);
                 } else {
+                    mecanumDrive.stop();
+                    step = Steps.Rotate;
+                    IMU_start = mecanumDrive.getIMUHeading();
+                    break;
+
+                }
+
+
+            case Rotate:
+                if(mecanumDrive.getIMUHeading()<IMU_start+90) {
+                    mecanumDrive.drive(0, 0, .5);
+                } else {
+                    mecanumDrive.stop();
                     step = Steps.ObservationZone;
+                    mecanumDrive.resetDrivePosition();
+                    break;
                 }
-                break;
-
-            case Repeat:
-                mecanumDrive.drive(-1,0,0); //go backwards
-                try {
-                    Thread.sleep(500); //TEST
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                mecanumDrive.drive(0,0,1); //rotate
-                try {
-                    Thread.sleep(500); //TEST
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                mecanumDrive.drive(0,-1,0); //sideways to observation zone, maybe reuse for the parking code
-                try {
-                    Thread.sleep(500); //TEST
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                mecanumDrive.drive(1,0,0); //clip the specimen
-                try {
-                    Thread.sleep(500); //TEST
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                mecanumDrive.drive(-1,0,0); //go backwards
-                try {
-                    Thread.sleep(500); //TEST
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                mecanumDrive.drive(0,0,1); //rotate
-                try {
-                    Thread.sleep(500); //TEST edit the timing on this
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                mecanumDrive.drive(0,0,1); //right to reset to original position
-                try {
-                    Thread.sleep(500); //TEST edit the timing on this
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                doneOnce = true;
-                step = Steps.SetAngle;
-                break;
-
             case ObservationZone:
-                mecanumDrive.drive(1,0,0);
-                try {
-                    Thread.sleep(500); //TEST edit the timing on this
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                if(mecanumDrive.getDrivePosition()<DRIVE_FORWARD_TICKS) {
+                    mecanumDrive.drive(1, 0, 0);
+                } else {
+                    mecanumDrive.stop();
+                    break;
                 }
-                mecanumDrive.drive(1,0,0);
-                try {
-                    Thread.sleep(500); //TEST edit the timing on this
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                mecanumDrive.stop();
-                break;
 
 
 

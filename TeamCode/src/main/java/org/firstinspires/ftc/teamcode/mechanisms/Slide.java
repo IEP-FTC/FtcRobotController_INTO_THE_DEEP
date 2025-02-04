@@ -41,6 +41,17 @@ public class Slide {
 
 
     }
+    public void climb (int ticks) { //TODO limit slide extension&retraction length with motor ticks (run using encoder)
+        int position = slideMotor.getCurrentPosition();
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slidePosition = position;
+
+        if (slideMotor.getCurrentPosition()<ticks){
+            slideMotor.setPower(-1);
+        }
+
+
+    }
 
     public void moveToPosition(int inches) {
         int  targetPosition = inches*(288/3); //Figure out equation for inches/ticks

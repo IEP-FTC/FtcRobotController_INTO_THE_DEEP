@@ -23,8 +23,8 @@ public class MecanumDrive {
         backLeftMotor = hardwareMap.dcMotor.get("back_left_motor");     //expansion hub - 0
         backRightMotor = hardwareMap.dcMotor.get("back_right_motor");   //expansion hub - 1
 
-        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -118,5 +118,8 @@ public class MecanumDrive {
     public void resetDrivePosition(){
         frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+    }
+    public double getIMUHeading(){
+        return imu.getHeading(AngleUnit.DEGREES);
     }
 }

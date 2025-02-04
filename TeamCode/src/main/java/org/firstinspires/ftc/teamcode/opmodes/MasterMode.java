@@ -50,13 +50,15 @@ public class MasterMode extends OpMode {
         }
 
         //Slide R Trigger extend L trigger contract
-        if (gamepad1.left_trigger > .1) {
-            slide.runSlide(false, gamepad1.left_trigger);
-        } else if (gamepad1.right_trigger > .1) {
-            slide.runSlide(true, gamepad1.right_trigger);
-        } else {
-            slide.stopSlide();
-        }//TODO add full extension/retract on bumpers
+        if(!climbMode) {
+            if (gamepad1.left_trigger > .1) {
+                slide.runSlide(false, gamepad1.left_trigger);
+            } else if (gamepad1.right_trigger > .1) {
+                slide.runSlide(true, gamepad1.right_trigger);
+            } else {
+                slide.stopSlide();
+            }//TODO add full extension/retract on bumpers
+        }
 
         if(gamepad2.x){
             climbMode=true;
@@ -66,7 +68,7 @@ public class MasterMode extends OpMode {
         }
 
         if (climbMode) {
-            slide.climb();
+            slide.climb(1000);
         }
 
         if(!(TARGETANGLE== armPivot.getCurrentAngle())){
@@ -92,9 +94,9 @@ public class MasterMode extends OpMode {
         armPivot.addTelemetry(telemetry);
 
         if(armPivot.getCurrentAngle()>90){
-            mecanumDrive.drive(-gamepad2.left_stick_y*.5, gamepad2.left_stick_x*.5, -gamepad2.right_stick_x*.5);
+            mecanumDrive.drive(-gamepad2.left_stick_y*.5, gamepad2.left_stick_x*.5, gamepad2.right_stick_x*.5);
         }else {
-            mecanumDrive.drive(-gamepad2.left_stick_y * .8, gamepad2.left_stick_x * .8, -gamepad2.right_stick_x * .8);
+            mecanumDrive.drive(-gamepad2.left_stick_y * .8, gamepad2.left_stick_x * .8, gamepad2.right_stick_x * .8);
         }
         telemetry.update();
     }
