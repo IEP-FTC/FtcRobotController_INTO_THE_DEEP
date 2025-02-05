@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -16,7 +18,9 @@ public class AutonomousSpecimen extends OpMode {
     PIDFArmPivot armPivot = new PIDFArmPivot();
     private DigitalChannel touchSensor;
 
-    public static int DRIVE_FORWARD_TICKS=1000;
+    public static int DRIVE_FORWARD_TICKS=1500;
+    public static int ANGLE1=119;
+    public static int ANGLE2=132;
     public double IMU_start;
     public double drivePosition;
 
@@ -36,6 +40,7 @@ public class AutonomousSpecimen extends OpMode {
         armPivot.init(hardwareMap);
         touchSensor = hardwareMap.get(DigitalChannel.class, "touch_sensor");
         touchSensor.setMode(DigitalChannel.Mode.INPUT);
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
     }
     /*
@@ -51,7 +56,7 @@ public class AutonomousSpecimen extends OpMode {
     public void loop(){
         switch(step){
             case SetAngle:
-                armPivot.moveToAngle(117);
+                armPivot.moveToAngle(ANGLE1);
                 if((int)armPivot.getCurrentAngle() >= armPivot.getTargetAngle()-2){
                     step = Steps.DriveForward;
                     drivePosition= mecanumDrive.getDrivePosition();
@@ -59,7 +64,7 @@ public class AutonomousSpecimen extends OpMode {
                 break;
             case DriveForward:
                 if(mecanumDrive.getDrivePosition()<drivePosition+DRIVE_FORWARD_TICKS) {
-                    mecanumDrive.drive(1, 0, 0);
+                    mecanumDrive.drive(.5, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.Extend;
@@ -67,30 +72,30 @@ public class AutonomousSpecimen extends OpMode {
                 break;
 
             case Extend:
-                armPivot.moveToAngle(127);
-                if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()){
+                armPivot.moveToAngle(ANGLE2);
+                if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()-2){
                     step = Steps.Hook;
                     drivePosition= mecanumDrive.getDrivePosition();
                 }
                 break;
 
             case Hook:
-                if(mecanumDrive.getDrivePosition()<drivePosition+DRIVE_FORWARD_TICKS) {
-                    mecanumDrive.drive(-1, 0, 0);
+                if(mecanumDrive.getDrivePosition()>drivePosition-DRIVE_FORWARD_TICKS) {
+                    mecanumDrive.drive(-.5, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.Lower_Arm;
-                    IMU_start = mecanumDrive.getIMUHeading();
                 }
                 break;
             case Lower_Arm:
                 armPivot.moveToAngle(armPivot.armRestAngle);
-                if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()) {
+                if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()+2) {
                     step = Steps.Rotate;
+                    IMU_start = mecanumDrive.getIMUHeading();
                 }
                 break;
             case Rotate:
-                if(mecanumDrive.getIMUHeading()<IMU_start+90) {
+                if(mecanumDrive.getIMUHeading()>IMU_start-90) {
                     mecanumDrive.drive(0, 0, .5);
                 } else {
                     mecanumDrive.stop();
@@ -101,13 +106,16 @@ public class AutonomousSpecimen extends OpMode {
 
             case ObservationZone:
                 if(mecanumDrive.getDrivePosition()<drivePosition+DRIVE_FORWARD_TICKS) {
-                    mecanumDrive.drive(1, 0, 0);
+                    mecanumDrive.drive(.5, 0, 0);
                 } else {
                     mecanumDrive.stop();
                 }
                 break;
 
         }
+        armPivot.addTelemetry(telemetry);
+        telemetry.addData("IMU Heading: ", mecanumDrive.getIMUHeading());
+        telemetry.update();
 
     }
 }

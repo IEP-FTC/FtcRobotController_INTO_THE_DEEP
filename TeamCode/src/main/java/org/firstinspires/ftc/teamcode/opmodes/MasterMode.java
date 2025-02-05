@@ -95,7 +95,7 @@ public class MasterMode extends OpMode {
         armPivot.addTelemetry(telemetry);
 
         if(armPivot.getCurrentAngle()>90){
-            mecanumDrive.drive(-gamepad2.left_stick_y*.5, gamepad2.left_stick_x*.5, gamepad2.right_stick_x*.5);
+            mecanumDrive.drive(-gamepad2.left_stick_y*.3, gamepad2.left_stick_x*.3, gamepad2.right_stick_x*.3);
         }else {
             mecanumDrive.drive(-gamepad2.left_stick_y * .8, gamepad2.left_stick_x * .8, gamepad2.right_stick_x * .8);
         }
