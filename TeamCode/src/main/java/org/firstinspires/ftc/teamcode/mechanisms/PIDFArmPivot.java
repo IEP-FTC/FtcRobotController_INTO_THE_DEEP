@@ -76,8 +76,8 @@ public class PIDFArmPivot {
     public void resetEncoder(){
         pivotLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         pivotRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        pivotLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        pivotRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        pivotLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        pivotRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         pivotLeft.setTargetPosition(0);
         pivotRight.setTargetPosition(0);
     }

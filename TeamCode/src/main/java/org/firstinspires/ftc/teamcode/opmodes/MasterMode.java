@@ -95,11 +95,7 @@ public class MasterMode extends OpMode {
             TARGETANGLE=armPivot.armRestAngle;
         }
 
-        if (gamepad2.a && gamepad2.dpad_down){
-            beingPressed = true;
-        } else {
-            beingPressed = false;
-        }
+        beingPressed = gamepad2.a && gamepad2.dpad_down;
 
         if (beingPressed){
             armPivot.resetArmPosition();
@@ -110,15 +106,16 @@ public class MasterMode extends OpMode {
             armPivot.resetEncoder();
             wasPressed = false;
         }
+        telemetry.addData("beingPressed", beingPressed);
 
-
+        telemetry.addData("wasPressed", wasPressed);
 
         armPivot.addTelemetry(telemetry);
 
         if(armPivot.getCurrentAngle()>90){
             mecanumDrive.drive(-gamepad2.left_stick_y*.3, gamepad2.left_stick_x*.3, gamepad2.right_stick_x*.3);
         }else {
-            mecanumDrive.drive(-gamepad2.left_stick_y * .7, gamepad2.left_stick_x * .7, gamepad2.right_stick_x * .5);
+            mecanumDrive.drive(-gamepad2.left_stick_y * .7, gamepad2.left_stick_x * .5, gamepad2.right_stick_x * .5);
         }
 
         mecanumDrive.addTelemetry(telemetry);
