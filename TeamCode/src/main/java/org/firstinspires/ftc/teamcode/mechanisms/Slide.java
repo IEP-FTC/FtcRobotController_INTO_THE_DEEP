@@ -11,7 +11,9 @@ public class Slide {
 
     public void init(HardwareMap hwMap) {
         slideMotor = hwMap.get(DcMotor.class, "Slide 1");
+        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor.setDirection(DcMotor.Direction.REVERSE);
+        slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void stopSlide () {

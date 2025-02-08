@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
@@ -7,6 +8,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.Slide;
 
+@Disabled
 
 @Autonomous(preselectTeleOp = "MasterMode")
 public class AutonomousSample extends OpMode{

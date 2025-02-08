@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
@@ -18,9 +19,9 @@ public class AutonomousSpecimen extends OpMode {
     PIDFArmPivot armPivot = new PIDFArmPivot();
     private DigitalChannel touchSensor;
 
-    public static int DRIVE_FORWARD_TICKS=1500;
+    public static int DRIVE_FORWARD_TICKS=1490;
     public static int ANGLE1=119;
-    public static int ANGLE2=132;
+    public static int ANGLE2=134;
     public double IMU_start;
     public double drivePosition;
 
@@ -34,6 +35,8 @@ public class AutonomousSpecimen extends OpMode {
         ObservationZone
     }
     private Steps step = Steps.SetAngle;
+    private ElapsedTime timer;
+    private double elapsedTime;
 
     public void init(){
         mecanumDrive.init(hardwareMap);
@@ -41,6 +44,7 @@ public class AutonomousSpecimen extends OpMode {
         touchSensor = hardwareMap.get(DigitalChannel.class, "touch_sensor");
         touchSensor.setMode(DigitalChannel.Mode.INPUT);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        this.timer = new ElapsedTime();
 
     }
     /*
@@ -64,38 +68,48 @@ public class AutonomousSpecimen extends OpMode {
                 break;
             case DriveForward:
                 if(mecanumDrive.getDrivePosition()<drivePosition+DRIVE_FORWARD_TICKS) {
-                    mecanumDrive.drive(.5, 0, 0);
+                    mecanumDrive.drive(.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.Extend;
+                    timer.reset();
                 }
                 break;
 
             case Extend:
+                elapsedTime=timer.seconds();
                 armPivot.moveToAngle(ANGLE2);
-                if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()-2){
+                if((int)armPivot.getCurrentAngle() >= (int)armPivot.getTargetAngle()-2 && elapsedTime>1){
                     step = Steps.Hook;
                     drivePosition= mecanumDrive.getDrivePosition();
+                    timer.reset();
                 }
+                telemetry.addData("Timer: ", timer.seconds());
                 break;
 
             case Hook:
-                if(mecanumDrive.getDrivePosition()>drivePosition-DRIVE_FORWARD_TICKS) {
-                    mecanumDrive.drive(-.5, 0, 0);
+                elapsedTime= timer.seconds();
+                if (elapsedTime>0.5) {
+                    armPivot.moveToAngle(ANGLE1);
+                }
+                if(mecanumDrive.getDrivePosition()>drivePosition-DRIVE_FORWARD_TICKS-150) {
+                    mecanumDrive.drive(-.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.Lower_Arm;
                 }
+                telemetry.addData("Timer: ", timer.seconds());
+
                 break;
             case Lower_Arm:
                 armPivot.moveToAngle(armPivot.armRestAngle);
-                if((int)armPivot.getCurrentAngle() == (int)armPivot.getTargetAngle()+2) {
+                if((int)armPivot.getCurrentAngle() <= (int)armPivot.getTargetAngle()+2) {
                     step = Steps.Rotate;
                     IMU_start = mecanumDrive.getIMUHeading();
                 }
                 break;
             case Rotate:
-                if(mecanumDrive.getIMUHeading()>IMU_start-90) {
+                if(mecanumDrive.getIMUHeading()>IMU_start-87) {
                     mecanumDrive.drive(0, 0, .5);
                 } else {
                     mecanumDrive.stop();
@@ -105,8 +119,8 @@ public class AutonomousSpecimen extends OpMode {
                 break;
 
             case ObservationZone:
-                if(mecanumDrive.getDrivePosition()<drivePosition+DRIVE_FORWARD_TICKS) {
-                    mecanumDrive.drive(.5, 0, 0);
+                if(mecanumDrive.getDrivePosition()<drivePosition+1550) {
+                    mecanumDrive.drive(.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
                 }

@@ -26,6 +26,8 @@ public class MecanumDrive {
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -77,10 +79,11 @@ public class MecanumDrive {
         }
     }
     public void addTelemetry(Telemetry telemetry){
-        telemetry.addLine("Drive PID Info");
-        telemetry.addData("currentHeading", currentHeading);
-        telemetry.addData("targetHeading",targetHeading);
-        telemetry.addData("Rotate Power",rotatePower*100);
+//        telemetry.addLine("Drive PID Info");
+//        telemetry.addData("currentHeading", currentHeading);
+//        telemetry.addData("targetHeading",targetHeading);
+//        telemetry.addData("Rotate Power",rotatePower*100);
+        telemetry.addData("Drive Position", getDrivePosition());
     }
     public void stop(){
         setPowers(0,0,0,0);

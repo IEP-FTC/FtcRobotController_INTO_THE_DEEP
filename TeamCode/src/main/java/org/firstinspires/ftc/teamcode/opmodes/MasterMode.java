@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @Config
 @TeleOp
 public class MasterMode extends OpMode {
-    public static int MAXPIVOTANGLE = 160;
+    public static int MAXPIVOTANGLE = 165;
     public static double TARGETANGLE;
     Intake intake = new Intake();
     PIDFArmPivot armPivot = new PIDFArmPivot();
@@ -70,6 +70,7 @@ public class MasterMode extends OpMode {
         if (climbMode) {
             slide.climb();
         }
+
         slide.addTelemetry(telemetry);
 
         if(!(TARGETANGLE== armPivot.getCurrentAngle())){
@@ -92,13 +93,18 @@ public class MasterMode extends OpMode {
             TARGETANGLE=armPivot.armRestAngle;
         }
 
+
+
         armPivot.addTelemetry(telemetry);
 
         if(armPivot.getCurrentAngle()>90){
             mecanumDrive.drive(-gamepad2.left_stick_y*.3, gamepad2.left_stick_x*.3, gamepad2.right_stick_x*.3);
         }else {
-            mecanumDrive.drive(-gamepad2.left_stick_y * .8, gamepad2.left_stick_x * .8, gamepad2.right_stick_x * .8);
+            mecanumDrive.drive(-gamepad2.left_stick_y * .7, gamepad2.left_stick_x * .7, gamepad2.right_stick_x * .5);
         }
+
+        mecanumDrive.addTelemetry(telemetry);
+
         telemetry.update();
     }
 }
