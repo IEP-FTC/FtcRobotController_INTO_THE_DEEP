@@ -73,5 +73,17 @@ public class PIDFArmPivot {
         telemetry.addData("Arm targetAngle",targetA);
         telemetry.addData("Arm PIDF power",power*100);
     }
+    public void resetEncoder(){
+        pivotLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        pivotRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        pivotLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        pivotRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        pivotLeft.setTargetPosition(0);
+        pivotRight.setTargetPosition(0);
+    }
+    public void resetArmPosition(){
+        pivotLeft.setPower(-0.1);
+        pivotRight.setPower(-0.1);
+    }
 
 }

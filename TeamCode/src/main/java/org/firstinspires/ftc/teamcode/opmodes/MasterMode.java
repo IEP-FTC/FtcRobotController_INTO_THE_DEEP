@@ -25,6 +25,8 @@ public class MasterMode extends OpMode {
     Slide slide = new Slide();
     public boolean climbMode = false;
     MecanumDrive mecanumDrive = new MecanumDrive();
+    boolean wasPressed = false;
+    boolean beingPressed = false;
 
 
     @Override
@@ -91,6 +93,22 @@ public class MasterMode extends OpMode {
         }
         if(TARGETANGLE<armPivot.armRestAngle){
             TARGETANGLE=armPivot.armRestAngle;
+        }
+
+        if (gamepad2.a && gamepad2.dpad_down){
+            beingPressed = true;
+        } else {
+            beingPressed = false;
+        }
+
+        if (beingPressed){
+            armPivot.resetArmPosition();
+            wasPressed = true;
+        }
+
+        if (wasPressed && !beingPressed){
+            armPivot.resetEncoder();
+            wasPressed = false;
         }
 
 
