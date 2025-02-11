@@ -18,10 +18,14 @@ public class ServoGripper {
     }
 
     public void open(){
+
         intakeServoLeft.setPosition(0);
+        intakeServoRight.setPosition(1);
     }
     public void close(){
+
         intakeServoLeft.setPosition(1);
+        intakeServoRight.setPosition(.3);
     }
 
 

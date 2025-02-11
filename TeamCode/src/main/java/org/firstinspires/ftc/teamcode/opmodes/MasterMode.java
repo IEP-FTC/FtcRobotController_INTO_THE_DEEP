@@ -83,7 +83,7 @@ public class MasterMode extends OpMode {
         if(gamepad1.a){
             TARGETANGLE=MAXPIVOTANGLE;
         }
-        if(gamepad1.y){
+        if(gamepad1.y && slide.getSlidePosition()>500){
             TARGETANGLE=armPivot.armRestAngle+5;
         }
         if(abs(gamepad1.left_stick_y)>.01){
