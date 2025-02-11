@@ -26,19 +26,20 @@ public class leftAuto extends OpMode {
     public double drivePosition;
 
     private enum Steps{
-        fixStuff,
-        SetAngle,
-        DriveForward,
-        Extend,
-        Hook,
-        Lower_Arm,
-        driveForward,
-        ObservationZone,
-        pushIn,
-        drveForward,
-        goSide
+        a,
+        b,
+        c,
+        d,
+        e,
+        f,
+        g,
+        h,
+        i,
+        j,
+        k,
+        l
     }
-    private Steps step = Steps.fixStuff;
+    private Steps step = Steps.a;
     private ElapsedTime timer;
     private double elapsedTime;
 
@@ -72,43 +73,43 @@ public class leftAuto extends OpMode {
         telemetry.addData("Step", step);
 
         switch(step) {
-            case fixStuff:
+            case a:
                 armPivot.resetArmPosition();
                 elapsedTime = timer.seconds();
                 if (elapsedTime > 1) {
-                    step = Steps.SetAngle;
+                    step = Steps.b;
                     armPivot.resetEncoder();
                 }
                 break;
-            case SetAngle:
+            case b:
                 armPivot.moveToAngle(ANGLE1);
                 if ((int) armPivot.getCurrentAngle() >= armPivot.getTargetAngle() - 2) {
-                    step = Steps.DriveForward;
+                    step = Steps.c;
                     drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
-            case DriveForward:
+            case c:
                 if (mecanumDrive.getDrivePosition() < drivePosition + DRIVE_FORWARD_TICKS) {
                     mecanumDrive.drive(.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.Extend;
+                    step = Steps.d;
                     timer.reset();
                 }
                 break;
 
-            case Extend:
+            case d:
                 elapsedTime = timer.seconds();
                 armPivot.moveToAngle(ANGLE2);
                 if ((int) armPivot.getCurrentAngle() >= (int) armPivot.getTargetAngle() - 2 && elapsedTime > 1) {
-                    step = Steps.Hook;
+                    step = Steps.e;
                     drivePosition = mecanumDrive.getDrivePosition();
                     timer.reset();
                 }
                 telemetry.addData("Timer: ", timer.seconds());
                 break;
 
-            case Hook:
+            case e:
                 elapsedTime = timer.seconds();
                 if (elapsedTime > 0.5) {
                     armPivot.moveToAngle(ANGLE1);
@@ -117,62 +118,62 @@ public class leftAuto extends OpMode {
                     mecanumDrive.drive(-.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.Lower_Arm;
+                    step = Steps.f;
                 }
                 telemetry.addData("Timer: ", timer.seconds());
 
                 break;
-            case Lower_Arm:
+            case f:
                 armPivot.moveToAngle(armPivot.armRestAngle);
                 if ((int) armPivot.getCurrentAngle() <= (int) armPivot.getTargetAngle() + 2) {
-                    step = Steps.ObservationZone;
+                    step = Steps.g;
                     drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
 
-            case ObservationZone:
+            case g:
                 if (mecanumDrive.getDrivePosition() < drivePosition - 1550) {
                     mecanumDrive.drive(0, -0.3, 0);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.driveForward;
+                    step = Steps.h;
                     drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
-            case driveForward:
+            case h:
                 if (mecanumDrive.getDrivePosition() < drivePosition + 1000) {
                     mecanumDrive.drive(.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.pushIn;
+                    step = Steps.i;
                     IMU_start = mecanumDrive.getIMUHeading();
                     drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
-            case pushIn:
+            case i:
                 if (mecanumDrive.getIMUHeading() > IMU_start - 87) {
                     mecanumDrive.drive(0, 0, .3);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.driveForward;
+                    step = Steps.j;
                     drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
-            case drveForward:
+            case j:
                 if (mecanumDrive.getDrivePosition() < drivePosition + 100) {
                     mecanumDrive.drive(.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.pushIn;
+                    step = Steps.k;
                     drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
-            case goSide:
+            case k:
                 if (mecanumDrive.getDrivePosition() < drivePosition - 1000) {
                     mecanumDrive.drive(0, -0.3, 0);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.driveForward;
+                    step = Steps.l;
                     drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
