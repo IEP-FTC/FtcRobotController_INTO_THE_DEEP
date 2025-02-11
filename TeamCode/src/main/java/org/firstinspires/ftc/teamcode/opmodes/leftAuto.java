@@ -52,15 +52,6 @@ public class leftAuto extends OpMode {
         this.timer = new ElapsedTime();
 
     }
-    /*
-    steps:
-    1. set the angle to 116 degrees and check to see whether that is true
-    2. drive forward for X seconds
-    3. set the arm angle to 127 and check
-    4. hook the specimen on by driving it backwards
-    5. (optional) go get another specimen and repeat
-    6. drive to observation zone
-    */
 
     public void start(){
         telemetry.addData("IMU Heading: ", mecanumDrive.getIMUHeading());
