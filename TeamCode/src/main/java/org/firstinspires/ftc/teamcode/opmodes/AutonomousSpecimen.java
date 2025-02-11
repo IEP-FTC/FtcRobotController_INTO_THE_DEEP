@@ -58,9 +58,15 @@ public class AutonomousSpecimen extends OpMode {
     6. drive to observation zone
     */
 
+    public void start(){
+        telemetry.addData("IMU Heading: ", mecanumDrive.getIMUHeading());
+        telemetry.addData("Step", step);
+        timer.reset();
+    }
+
     public void loop(){
         telemetry.addData("IMU Heading: ", mecanumDrive.getIMUHeading());
-
+        telemetry.addData("Step", step);
         switch(step){
             case fixStuff:
                 armPivot.resetArmPosition();
