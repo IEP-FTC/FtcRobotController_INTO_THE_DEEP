@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.mechanisms.ArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
+import org.firstinspires.ftc.teamcode.mechanisms.ServoIntake;
 import org.firstinspires.ftc.teamcode.mechanisms.Slide;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
@@ -20,7 +21,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 public class MasterMode extends OpMode {
     public static int MAXPIVOTANGLE = 165;
     public static double TARGETANGLE;
-    Intake intake = new Intake();
+    ServoIntake intake = new ServoIntake();
     PIDFArmPivot armPivot = new PIDFArmPivot();
     Slide slide = new Slide();
     public boolean climbMode = false;
