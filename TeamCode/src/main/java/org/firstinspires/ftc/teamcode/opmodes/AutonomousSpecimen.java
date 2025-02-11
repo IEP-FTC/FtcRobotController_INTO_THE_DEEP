@@ -26,6 +26,7 @@ public class AutonomousSpecimen extends OpMode {
     public double drivePosition;
 
     private enum Steps{
+        fixStuff,
         SetAngle,
         DriveForward,
         Extend,
@@ -34,7 +35,7 @@ public class AutonomousSpecimen extends OpMode {
         Rotate,
         ObservationZone
     }
-    private Steps step = Steps.SetAngle;
+    private Steps step = Steps.fixStuff;
     private ElapsedTime timer;
     private double elapsedTime;
 
@@ -61,6 +62,14 @@ public class AutonomousSpecimen extends OpMode {
         telemetry.addData("IMU Heading: ", mecanumDrive.getIMUHeading());
 
         switch(step){
+            case fixStuff:
+                armPivot.resetArmPosition();
+                elapsedTime=timer.seconds();
+                if (elapsedTime > 1){
+                    step = Steps.SetAngle;
+                    armPivot.resetEncoder();
+                }
+                break;
             case SetAngle:
                 armPivot.moveToAngle(ANGLE1);
                 if((int)armPivot.getCurrentAngle() >= armPivot.getTargetAngle()-2){
