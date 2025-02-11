@@ -123,7 +123,7 @@ public class leftAuto extends OpMode {
                 break;
 
             case g:
-                if (mecanumDrive.getDrivePosition() < drivePosition - 1550) {
+                if (mecanumDrive.getDrivePosition() < drivePosition - 3000) {
                     mecanumDrive.drive(0, -0.3, 0);
                 } else {
                     mecanumDrive.stop();
@@ -142,7 +142,7 @@ public class leftAuto extends OpMode {
                 }
                 break;
             case i:
-                if (mecanumDrive.getIMUHeading() > IMU_start - 87) {
+                if (mecanumDrive.getIMUHeading() <  IMU_start + 87) {
                     mecanumDrive.drive(0, 0, .3);
                 } else {
                     mecanumDrive.stop();
@@ -151,7 +151,7 @@ public class leftAuto extends OpMode {
                 }
                 break;
             case j:
-                if (mecanumDrive.getDrivePosition() < drivePosition + 100) {
+                if (mecanumDrive.getDrivePosition() > drivePosition + 100) {
                     mecanumDrive.drive(.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
