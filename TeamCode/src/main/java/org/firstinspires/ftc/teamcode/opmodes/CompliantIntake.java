@@ -5,26 +5,34 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBot;
-@Disabled
+import org.firstinspires.ftc.teamcode.mechanisms.ServoIntake;
+
 @TeleOp
 public class CompliantIntake extends OpMode {
 
-    ProgrammingBot bot = new ProgrammingBot();
+    ServoIntake intake = new ServoIntake();
 
    @Override
     public void init () {
-       bot.init(hardwareMap);
+       intake.init(hardwareMap);
     }
 
     @Override
     public void loop () {
-       if (gamepad1.left_trigger > .1) {
-           bot.runIntake(false, gamepad1.left_trigger);
-       } else if (gamepad1.right_trigger > .1) {
-           bot.runIntake(true, gamepad1.right_trigger);
+       if (gamepad1.a) {
+           intake.runIntake(false);
+       } else if (gamepad1.b) {
+           intake.runIntake(true);
        } else {
-           bot.stopIntake();
+           intake.stopIntake();
        }
+
+       telemetry.addData("Gamepad1 A",gamepad1.a);
+       telemetry.addData("Gamepad1 B",gamepad1.b);
+       intake.addTelemetry(telemetry);
+       telemetry.update();
     }
+
+
 
 }

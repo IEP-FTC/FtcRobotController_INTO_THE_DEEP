@@ -58,6 +58,8 @@ public class AutonomousSpecimen extends OpMode {
     */
 
     public void loop(){
+        telemetry.addData("IMU Heading: ", mecanumDrive.getIMUHeading());
+
         switch(step){
             case SetAngle:
                 armPivot.moveToAngle(ANGLE1);
@@ -104,23 +106,25 @@ public class AutonomousSpecimen extends OpMode {
             case Lower_Arm:
                 armPivot.moveToAngle(armPivot.armRestAngle);
                 if((int)armPivot.getCurrentAngle() <= (int)armPivot.getTargetAngle()+2) {
-                    step = Steps.Rotate;
+                    step = Steps.ObservationZone;
                     IMU_start = mecanumDrive.getIMUHeading();
                 }
                 break;
-            case Rotate:
-                if(mecanumDrive.getIMUHeading()>IMU_start-87) {
-                    mecanumDrive.drive(0, 0, .5);
-                } else {
-                    mecanumDrive.stop();
-                    step = Steps.ObservationZone;
-                    drivePosition= mecanumDrive.getDrivePosition();
-                }
-                break;
+//            case Rotate:
+//                telemetry.addData("IMU Heading: ", mecanumDrive.getIMUHeading());
+//
+//                if(mecanumDrive.getIMUHeading()>IMU_start-87) {
+//                    mecanumDrive.drive(0, 0, .5);
+//                } else {
+//                    mecanumDrive.stop();
+//                    step = Steps.ObservationZone;
+//                    drivePosition= mecanumDrive.getDrivePosition();
+//                }
+//                break;
 
             case ObservationZone:
                 if(mecanumDrive.getDrivePosition()<drivePosition+1550) {
-                    mecanumDrive.drive(.3, 0, 0);
+                    mecanumDrive.drive(0, 0.3, 0);
                 } else {
                     mecanumDrive.stop();
                 }
@@ -128,7 +132,6 @@ public class AutonomousSpecimen extends OpMode {
 
         }
         armPivot.addTelemetry(telemetry);
-        telemetry.addData("IMU Heading: ", mecanumDrive.getIMUHeading());
         telemetry.update();
 
     }
