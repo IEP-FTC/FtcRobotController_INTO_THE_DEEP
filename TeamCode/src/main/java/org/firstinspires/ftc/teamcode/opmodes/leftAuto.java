@@ -119,24 +119,27 @@ public class leftAuto extends OpMode {
                 armPivot.moveToAngle(armPivot.armRestAngle);
                 if ((int) armPivot.getCurrentAngle() <= (int) armPivot.getTargetAngle() + 2) {
                     step = Steps.ObservationZone;
+                    drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
 
             case ObservationZone:
-                if (mecanumDrive.getDrivePosition() > drivePosition - 1550) {
+                if (mecanumDrive.getDrivePosition() < drivePosition - 1550) {
                     mecanumDrive.drive(0, -0.3, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.driveForward;
+                    drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
             case driveForward:
-                if (mecanumDrive.getDrivePosition() < drivePosition + 1550) {
+                if (mecanumDrive.getDrivePosition() < drivePosition + 1000) {
                     mecanumDrive.drive(.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.pushIn;
                     IMU_start = mecanumDrive.getIMUHeading();
+                    drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
             case pushIn:
@@ -145,6 +148,7 @@ public class leftAuto extends OpMode {
                 } else {
                     mecanumDrive.stop();
                     step = Steps.driveForward;
+                    drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
             case drveForward:
@@ -153,14 +157,16 @@ public class leftAuto extends OpMode {
                 } else {
                     mecanumDrive.stop();
                     step = Steps.pushIn;
+                    drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
             case goSide:
-                if (mecanumDrive.getDrivePosition() > drivePosition - 1550) {
+                if (mecanumDrive.getDrivePosition() < drivePosition - 1000) {
                     mecanumDrive.drive(0, -0.3, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.driveForward;
+                    drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
         }
