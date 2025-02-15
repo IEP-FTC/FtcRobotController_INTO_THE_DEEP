@@ -105,7 +105,7 @@ public class leftAuto extends OpMode {
                 if (elapsedTime > 0.5) {
                     armPivot.moveToAngle(ANGLE1);
                 }
-                if (mecanumDrive.getDrivePosition() > drivePosition - DRIVE_FORWARD_TICKS - 120) {
+                if (mecanumDrive.getDrivePosition() > drivePosition - DRIVE_FORWARD_TICKS - 200) {
                     mecanumDrive.drive(-.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
@@ -139,7 +139,7 @@ public class leftAuto extends OpMode {
                     drivePosition = mecanumDrive.getDrivePosition();
                 } else {
                     drivePosition = mecanumDrive.getDrivePosition();
-                    mecanumDrive.drive(0, +0.3, 0);
+                    mecanumDrive.drive(0, -0.3, 0);
                 }
                 break;
             case h:
