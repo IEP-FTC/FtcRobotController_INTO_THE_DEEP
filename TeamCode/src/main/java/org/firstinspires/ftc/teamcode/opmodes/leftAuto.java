@@ -114,17 +114,27 @@ public class leftAuto extends OpMode {
                 telemetry.addData("Timer: ", timer.seconds());
 
                 break;
+//            case f:
+//                armPivot.moveToAngle(armPivot.armRestAngle);
+//                if ((int) armPivot.getCurrentAngle() <= (int) armPivot.getTargetAngle() + 2) {
+//                    step = Steps.g;
+//                    drivePosition = mecanumDrive.getDrivePosition();
+//                }
+//                break;
             case f:
                 armPivot.moveToAngle(armPivot.armRestAngle);
                 if ((int) armPivot.getCurrentAngle() <= (int) armPivot.getTargetAngle() + 2) {
                     step = Steps.g;
                     drivePosition = mecanumDrive.getDrivePosition();
+                    // Only reset the timer once transitioning to the next step (g)
+                    timer.reset();  // Reset the timer here, as we're starting a new phase
                 }
                 break;
 
+
             case g:
                 if (mecanumDrive.getDrivePosition() > drivePosition + 1500) {
-                    mecanumDrive.drive(0, -0.3, 0);
+                    mecanumDrive.drive(0, +0.3, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.h;
