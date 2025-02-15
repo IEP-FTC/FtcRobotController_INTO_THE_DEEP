@@ -19,7 +19,7 @@ public class leftAuto extends OpMode {
     PIDFArmPivot armPivot = new PIDFArmPivot();
     private DigitalChannel touchSensor;
 
-    public static int DRIVE_FORWARD_TICKS=1490;
+    public static int DRIVE_FORWARD_TICKS=1400;
     public static int ANGLE1=119;
     public static int ANGLE2=134;
     public double IMU_start;
@@ -105,7 +105,7 @@ public class leftAuto extends OpMode {
                 if (elapsedTime > 0.5) {
                     armPivot.moveToAngle(ANGLE1);
                 }
-                if (mecanumDrive.getDrivePosition() > drivePosition - DRIVE_FORWARD_TICKS - 150) {
+                if (mecanumDrive.getDrivePosition() > drivePosition - DRIVE_FORWARD_TICKS - 120) {
                     mecanumDrive.drive(-.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
@@ -133,7 +133,7 @@ public class leftAuto extends OpMode {
 
 
             case g:
-                if (mecanumDrive.getDrivePosition() > drivePosition + 1500) {
+                if (mecanumDrive.getDrivePosition() < drivePosition - 1200) {
                     mecanumDrive.stop();
                     step = Steps.h;
                     drivePosition = mecanumDrive.getDrivePosition();
