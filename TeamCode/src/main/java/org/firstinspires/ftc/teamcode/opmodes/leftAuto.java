@@ -134,11 +134,12 @@ public class leftAuto extends OpMode {
 
             case g:
                 if (mecanumDrive.getDrivePosition() > drivePosition + 1500) {
-                    mecanumDrive.drive(0, +0.3, 0);
-                } else {
                     mecanumDrive.stop();
                     step = Steps.h;
                     drivePosition = mecanumDrive.getDrivePosition();
+                } else {
+                    drivePosition = mecanumDrive.getDrivePosition();
+                    mecanumDrive.drive(0, +0.3, 0);
                 }
                 break;
             case h:
