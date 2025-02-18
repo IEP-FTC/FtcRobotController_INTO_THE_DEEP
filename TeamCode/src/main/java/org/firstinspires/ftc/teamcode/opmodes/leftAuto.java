@@ -25,6 +25,7 @@ public class leftAuto extends OpMode {
     public static int C_DRIVE_FORWARD_TICKS =1450;
     public static int B_ANGLE =119;
     public static int ANGLE2=134;
+    public static int GMOVESIDE;
     public double IMU_start;
     public double drivePosition;
     public int goIntake;
@@ -147,7 +148,7 @@ public class leftAuto extends OpMode {
 
 
             case g:
-                if (mecanumDrive.getDrivePosition() <= - 1300) {
+                if (mecanumDrive.getDrivePosition() <= - GMOVESIDE) {
                     mecanumDrive.stop();
                     step = Steps.h;
                     drivePosition = mecanumDrive.getDrivePosition();
