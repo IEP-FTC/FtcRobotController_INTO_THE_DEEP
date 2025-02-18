@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.Slide;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
-@Config
 @TeleOp
 public class PIDFTuner extends OpMode {
     public static int PIVOT_ANGLE = 120;

@@ -12,7 +12,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.ArrayList;
 
-@Config
 public class ProgrammingBot {
     public static double SPEED_ADJUSTMENT = 0.5;
     public static double TURN_ADJUSTMENT = 0.5;

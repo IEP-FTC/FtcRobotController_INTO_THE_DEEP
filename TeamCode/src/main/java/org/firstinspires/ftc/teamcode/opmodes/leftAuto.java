@@ -25,8 +25,10 @@ public class leftAuto extends OpMode {
     public static int C_DRIVE_FORWARD_TICKS =1450;
     public static int B_ANGLE = 119;
     public static int ANGLE2 = 134;
-    public static int GMOVESIDE = 1200;
-    public static int IROTATE;
+    public static int GMOVESIDE = 1100;
+    public static int IROTATE = 200;
+    public static int MSTRAFE = 1550;
+    public static int NDRIVE = 700;
     public double IMU_start;
     public double drivePosition;
     public int goIntake;
@@ -217,7 +219,7 @@ public class leftAuto extends OpMode {
                 }
 
             case m:
-                if (mecanumDrive.getDrivePosition() > drivePosition - 1450) {
+                if (mecanumDrive.getDrivePosition() > drivePosition - MSTRAFE) {
                     mecanumDrive.drive(0, -0.5, 0);
                     armPivot.moveToAngle(165);
                 } else {
@@ -249,7 +251,7 @@ public class leftAuto extends OpMode {
                     telemetry.update();
                     goIntake = 0;
                 }
-                if (mecanumDrive.getDrivePosition() < drivePosition + 600) {
+                if (mecanumDrive.getDrivePosition() < drivePosition + NDRIVE) {
                     mecanumDrive.drive(.2,0,0);
                  } else {
                     mecanumDrive.stop();
