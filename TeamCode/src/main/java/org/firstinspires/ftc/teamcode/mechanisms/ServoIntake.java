@@ -32,4 +32,7 @@ public class ServoIntake {
     public void stopIntake () {
         intakeServo.setPower(0);
     }
+
 }
+
+

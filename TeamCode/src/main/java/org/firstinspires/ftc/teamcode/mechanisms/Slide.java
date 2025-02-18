@@ -60,4 +60,23 @@ public class Slide {
         telemetry.addData("Slide Power",slideMotor.getPower());
     }
 
+    public void autoSlide (boolean extend, double power) { //TODO limit slide extension&retraction length with motor ticks (run using encoder)
+        int position = slideMotor.getCurrentPosition();
+        slidePosition = position;
+        if (extend) {
+            if (position <= 1200) {
+                slideMotor.setPower(power);
+            } else {
+                stopSlide();
+            }
+        } else {
+            if (position >= 20) {
+                slideMotor.setPower(-power);
+            } else {
+                stopSlide();
+            }
+        }
+
+    }
 }
+

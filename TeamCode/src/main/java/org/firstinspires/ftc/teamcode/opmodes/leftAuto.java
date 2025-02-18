@@ -11,12 +11,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
+import org.firstinspires.ftc.teamcode.mechanisms.ServoIntake;
+import org.firstinspires.ftc.teamcode.mechanisms.Slide;
 
 @Config
 @Autonomous(preselectTeleOp = "MasterMode")
 public class leftAuto extends OpMode {
     MecanumDrive mecanumDrive = new MecanumDrive();
     PIDFArmPivot armPivot = new PIDFArmPivot();
+    ServoIntake intake = new ServoIntake();
+    Slide slide = new Slide();
     private DigitalChannel touchSensor;
 
     public static int DRIVE_FORWARD_TICKS=1400;
@@ -24,7 +28,8 @@ public class leftAuto extends OpMode {
     public static int ANGLE2=134;
     public double IMU_start;
     public double drivePosition;
-
+    public int goIntake;
+    public int goSlide;
     private enum Steps{
         a,
         b,
@@ -37,7 +42,21 @@ public class leftAuto extends OpMode {
         i,
         j,
         k,
-        l
+        l,
+        m,
+        n,
+        o,
+        p,
+        q,
+        r,
+        s,
+        t,
+        u,
+        v,
+        w,
+        x,
+        y,
+        z
     }
     private Steps step = Steps.a;
     private ElapsedTime timer;
@@ -45,6 +64,8 @@ public class leftAuto extends OpMode {
 
     public void init(){
         mecanumDrive.init(hardwareMap);
+        intake.init(hardwareMap);
+        slide.init(hardwareMap);
         armPivot.init(hardwareMap);
         touchSensor = hardwareMap.get(DigitalChannel.class, "touch_sensor");
         touchSensor.setMode(DigitalChannel.Mode.INPUT);
@@ -62,12 +83,12 @@ public class leftAuto extends OpMode {
     public void loop(){
         telemetry.addData("IMU Heading: ", mecanumDrive.getIMUHeading());
         telemetry.addData("Step", step);
-
+        telemetry.addData("drivePos", drivePosition);
         switch(step) {
             case a:
                 armPivot.resetArmPosition();
                 elapsedTime = timer.seconds();
-                if (elapsedTime > 1) {
+                if (elapsedTime > .5) {
                     step = Steps.b;
                     armPivot.resetEncoder();
                 }
@@ -92,7 +113,7 @@ public class leftAuto extends OpMode {
             case d:
                 elapsedTime = timer.seconds();
                 armPivot.moveToAngle(ANGLE2);
-                if ((int) armPivot.getCurrentAngle() >= (int) armPivot.getTargetAngle() - 2 && elapsedTime > 1) {
+                if ((int) armPivot.getCurrentAngle() >= (int) armPivot.getTargetAngle() - 2 && elapsedTime > .5) {
                     step = Steps.e;
                     drivePosition = mecanumDrive.getDrivePosition();
                     timer.reset();
@@ -105,7 +126,7 @@ public class leftAuto extends OpMode {
                 if (elapsedTime > 0.5) {
                     armPivot.moveToAngle(ANGLE1);
                 }
-                if (mecanumDrive.getDrivePosition() > drivePosition - DRIVE_FORWARD_TICKS - 200) {
+                if (mecanumDrive.getDrivePosition() > drivePosition - DRIVE_FORWARD_TICKS ) {
                     mecanumDrive.drive(-.3, 0, 0);
                 } else {
                     mecanumDrive.stop();
@@ -114,13 +135,7 @@ public class leftAuto extends OpMode {
                 telemetry.addData("Timer: ", timer.seconds());
 
                 break;
-//            case f:
-//                armPivot.moveToAngle(armPivot.armRestAngle);
-//                if ((int) armPivot.getCurrentAngle() <= (int) armPivot.getTargetAngle() + 2) {
-//                    step = Steps.g;
-//                    drivePosition = mecanumDrive.getDrivePosition();
-//                }
-//                break;
+//
             case f:
                 armPivot.moveToAngle(armPivot.armRestAngle);
                 if ((int) armPivot.getCurrentAngle() <= (int) armPivot.getTargetAngle() + 2) {
@@ -133,18 +148,18 @@ public class leftAuto extends OpMode {
 
 
             case g:
-                if (mecanumDrive.getDrivePosition() < drivePosition - 1200) {
+                if (mecanumDrive.getDrivePosition() <= - 1300) {
                     mecanumDrive.stop();
                     step = Steps.h;
                     drivePosition = mecanumDrive.getDrivePosition();
                 } else {
                     drivePosition = mecanumDrive.getDrivePosition();
-                    mecanumDrive.drive(0, -0.3, 0);
+                    mecanumDrive.drive(0, -0.5, 0);
                 }
                 break;
             case h:
-                if (mecanumDrive.getDrivePosition() < drivePosition + 1000) {
-                    mecanumDrive.drive(.3, 0, 0);
+                if (mecanumDrive.getDrivePosition() < drivePosition + 1650) {
+                    mecanumDrive.drive(.5, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.i;
@@ -153,8 +168,9 @@ public class leftAuto extends OpMode {
                 }
                 break;
             case i:
-                if (mecanumDrive.getIMUHeading() <  IMU_start + 87) {
-                    mecanumDrive.drive(0, 0, .3);
+                //380 ticks is = 90 degrees for rotation
+                if (mecanumDrive.getDrivePosition() >= -380) {
+                    mecanumDrive.drive(0, 0, -.3);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.j;
@@ -162,27 +178,159 @@ public class leftAuto extends OpMode {
                 }
                 break;
             case j:
-                if (mecanumDrive.getDrivePosition() > drivePosition + 100) {
-                    mecanumDrive.drive(.3, 0, 0);
+              if (armPivot.getCurrentAngle() < 73) {
+                  armPivot.moveToAngle(73.5);
                 } else {
-                    mecanumDrive.stop();
-                    step = Steps.k;
-                    drivePosition = mecanumDrive.getDrivePosition();
-                }
+                  step = Steps.k;
+                  goIntake = 1;
+                  goSlide = 1;
+                  timer.reset();
+              }
                 break;
             case k:
-                if (mecanumDrive.getDrivePosition() < drivePosition - 1000) {
-                    mecanumDrive.drive(0, -0.3, 0);
+
+                elapsedTime = timer.seconds();
+
+                if (goIntake == 1 && goSlide == 1 && elapsedTime < 1.5) {
+                    slide.autoSlide(true, 0.4);
+                    intake.runIntake(true);
+                    mecanumDrive.drive(.1,0,0);
+                } else {
+                    step = Steps.l;
+                    intake.stopIntake();
+                    slide.stopSlide();
+                    timer.reset();
+                }
+
+                telemetry.addData("goIntake", goIntake);
+                telemetry.addData("goSlide", goSlide);
+                telemetry.addData("Timer Seconds", timer.seconds());
+                telemetry.update();
+                break;
+
+            case l:
+                if (armPivot.getCurrentAngle() < 165){
+                    armPivot.moveToAngle(165);
+                } else {
+                    step = Steps.m;
+                }
+
+            case m:
+                if (mecanumDrive.getDrivePosition() > drivePosition - 1550) {
+                    mecanumDrive.drive(0, -0.5, 0);
+                    armPivot.moveToAngle(165);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.l;
+                    step = Steps.n;
                     drivePosition = mecanumDrive.getDrivePosition();
+                    armPivot.holdPivot();
+                    timer.reset();
                 }
                 break;
-        }
+
+            case n:
+                elapsedTime = timer.seconds();
+                timer.reset();
+                goSlide = 1;
+                if (slide.getSlidePosition() <= 1750) {
+                   slide.runSlide(true,.8);
+                    armPivot.moveToAngle(165);
+                    telemetry.addData("slide position", slide.getSlidePosition());
+                    telemetry.update();
+                    timer.reset();
+                } else {
+
+                    slide.stopSlide();
+                    step = Steps.o;
+                    armPivot.moveToAngle(165);
+                    timer.reset();
+                    telemetry.addData("slide position", slide.getSlidePosition());
+                    telemetry.update();
+                    goIntake = 0;
+                }
+                if (mecanumDrive.getDrivePosition() < drivePosition + 600) {
+                    mecanumDrive.drive(.2,0,0);
+                 } else {
+                    mecanumDrive.stop();
+                    timer.reset();
+                }
+
+                break;
+
+            case o:
+                elapsedTime = timer.seconds();
+                if (goIntake == 0 && elapsedTime < 2.5) {
+                    intake.runIntake(false);
+                } else {
+                    intake.stopIntake();
+                    step = Steps.p;
+                    timer.reset();
+                }
+                break;
+
+            case p:
+                if (mecanumDrive.getDrivePosition() > drivePosition - 100) {
+                    mecanumDrive.drive(-.2,0,0);
+                } else {
+                    mecanumDrive.stop();
+                }
+                if (slide.getSlidePosition() >= 100) {
+                    slide.runSlide(false,.8);
+                } else {
+                    slide.stopSlide();
+                    step = Steps.q;
+                }
+                break;
+
+            case q:
+                if(mecanumDrive.getDrivePosition() < drivePosition + 1700) {
+                    mecanumDrive.drive(0.05,.5,0);
+                } else {
+                    mecanumDrive.stop();
+                    step = Steps.r;
+                }
+                break;
+
+            case r:
+                if (armPivot.getCurrentAngle() > 74) {
+                    armPivot.moveToAngle(73);
+                    goIntake = 1;
+                    goSlide = 1;
+                    timer.reset();
+                } else {
+                    armPivot.moveToAngle(73);
+                    step = Steps.s;
+                }
+                break;
+
+            case s:
+                if (mecanumDrive.getDrivePosition() < drivePosition + 400) {
+                    mecanumDrive.drive(.2,0,0);
+                    armPivot.moveToAngle(73);
+                } else {
+                    step = Steps.t;
+                    mecanumDrive.stop();
+                    timer.reset();
+                }
+                break;
+            case u:
+                elapsedTime = timer.seconds();
+                if (goIntake == 1 && goSlide == 1 && elapsedTime < 1.5) {
+                    slide.autoSlide(true, 0.4);
+                    intake.runIntake(true);
+                    mecanumDrive.drive(.15,0,0);
+        } else {
+                    intake.stopIntake();
+                    slide.stopSlide();
+                    step = Steps.v;
+                    timer.reset();
+                }
 
         armPivot.addTelemetry(telemetry);
+        slide.addTelemetry(telemetry);
+        telemetry.addData("slide position", slide.getSlidePosition());
         telemetry.update();
 
+        }
     }
 }
