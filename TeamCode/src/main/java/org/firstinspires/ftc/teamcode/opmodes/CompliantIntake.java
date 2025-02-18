@@ -12,6 +12,8 @@ import org.firstinspires.ftc.teamcode.mechanisms.ServoIntake;
 public class CompliantIntake extends OpMode {
 
     ServoGripper intake = new ServoGripper();
+    double leftServoPosition;
+    double rightServoPosition;
 
    @Override
     public void init () {
@@ -20,16 +22,25 @@ public class CompliantIntake extends OpMode {
 
     @Override
     public void loop () {
-       if (gamepad1.a) {
-           intake.open();
-       } else if (gamepad1.b) {
-           intake.close();
+       if(gamepad1.left_stick_x > 0.05){
+           leftServoPosition += gamepad1.left_stick_x/50;
+       }
+       intake.moveLeftServo(leftServoPosition);
+
+       if(gamepad1.right_stick_x > 0.05){
+            rightServoPosition += gamepad1.left_stick_x/50;
+       }
+       intake.moveRightServo(rightServoPosition);
+
+       if(leftServoPosition > 1){
+           leftServoPosition = 1;
        }
 
-       telemetry.addData("Gamepad1 A",gamepad1.a);
-       telemetry.addData("Gamepad1 B",gamepad1.b);
-       intake.addTelemetry(telemetry);
-       telemetry.update();
+        if(rightServoPosition > 1){
+            rightServoPosition = 1;
+        }
+
+
     }
 
 

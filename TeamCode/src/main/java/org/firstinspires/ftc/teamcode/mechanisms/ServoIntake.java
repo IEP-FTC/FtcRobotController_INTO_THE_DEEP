@@ -9,30 +9,27 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ServoIntake {
 
-   private CRServo intakeServo;
+   private CRServo intakeServoLeft;
+   private CRServo intakeServoRight;
 
     public void init(HardwareMap hardwareMap) {
 
-        intakeServo = hardwareMap.get(CRServo.class, "servo");
+        intakeServoLeft = hardwareMap.get(CRServo.class, "servoLeft");
+        intakeServoRight = hardwareMap.get(CRServo.class, "servoRight");
 
     }
 
-    public void runIntake (boolean forward) {
-
-        if (forward) {
-            intakeServo.setPower(1);
-
-        } else {
-            intakeServo.setPower(-1);
-        }
-    }
-    public void addTelemetry(Telemetry telemetry){
-        telemetry.addData("Intake Power", intakeServo.getPower());
-    }
-    public void stopIntake () {
-        intakeServo.setPower(0);
+    public void moveLeftServo(double powerLeft){
+        intakeServoLeft.setPower(powerLeft);
     }
 
+    public void moveRightServo(double powerRight){
+        intakeServoRight.setPower(powerRight);
+    }
+    public void stop(){
+        intakeServoLeft.setPower(0);
+        intakeServoLeft.setPower(0);
+    }
 }
 
 
