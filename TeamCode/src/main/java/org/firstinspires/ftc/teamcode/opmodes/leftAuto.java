@@ -29,6 +29,7 @@ public class leftAuto extends OpMode {
     public static int IROTATE = 200;
     public static int MSTRAFE = 1550;
     public static int NDRIVE = 700;
+    public static int QSTRAFE = 1800;
     public double IMU_start;
     public double drivePosition;
     public int goIntake;
@@ -286,7 +287,7 @@ public class leftAuto extends OpMode {
                 break;
 
             case q:
-                if(mecanumDrive.getDrivePosition() < drivePosition + 1700) {
+                if(mecanumDrive.getDrivePosition() < drivePosition + QSTRAFE) {
                     mecanumDrive.drive(0.05,.5,0);
                 } else {
                     mecanumDrive.stop();
