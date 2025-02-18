@@ -23,7 +23,7 @@ public class leftAuto extends OpMode {
     Slide slide = new Slide();
     private DigitalChannel touchSensor;
 
-    public static int DRIVE_FORWARD_TICKS=1400;
+    public static int DRIVE_FORWARD_TICKS=1450;
     public static int ANGLE1=119;
     public static int ANGLE2=134;
     public double IMU_start;
@@ -102,7 +102,7 @@ public class leftAuto extends OpMode {
                 break;
             case c:
                 if (mecanumDrive.getDrivePosition() < drivePosition + DRIVE_FORWARD_TICKS) {
-                    mecanumDrive.drive(.3, 0, 0);
+                    mecanumDrive.drive(.5, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.d;
@@ -127,7 +127,7 @@ public class leftAuto extends OpMode {
                     armPivot.moveToAngle(ANGLE1);
                 }
                 if (mecanumDrive.getDrivePosition() > drivePosition - DRIVE_FORWARD_TICKS ) {
-                    mecanumDrive.drive(-.3, 0, 0);
+                    mecanumDrive.drive(-.5, 0, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.f;
@@ -191,7 +191,7 @@ public class leftAuto extends OpMode {
 
                 elapsedTime = timer.seconds();
 
-                if (goIntake == 1 && goSlide == 1 && elapsedTime < 1.5) {
+                if (goIntake == 1 && goSlide == 1 && elapsedTime < 2) {
                     slide.autoSlide(true, 0.4);
                     intake.runIntake(true);
                     mecanumDrive.drive(.1,0,0);
@@ -216,7 +216,7 @@ public class leftAuto extends OpMode {
                 }
 
             case m:
-                if (mecanumDrive.getDrivePosition() > drivePosition - 1550) {
+                if (mecanumDrive.getDrivePosition() > drivePosition - 1450) {
                     mecanumDrive.drive(0, -0.5, 0);
                     armPivot.moveToAngle(165);
                 } else {
@@ -292,28 +292,28 @@ public class leftAuto extends OpMode {
                 break;
 
             case r:
-                if (armPivot.getCurrentAngle() > 74) {
-                    armPivot.moveToAngle(73);
-                    goIntake = 1;
-                    goSlide = 1;
-                    timer.reset();
-                } else {
-                    armPivot.moveToAngle(73);
-                    step = Steps.s;
-                }
-                break;
-
-            case s:
                 if (mecanumDrive.getDrivePosition() < drivePosition + 400) {
                     mecanumDrive.drive(.2,0,0);
                     armPivot.moveToAngle(73);
                 } else {
-                    step = Steps.t;
+                    step = Steps.s;
                     mecanumDrive.stop();
                     timer.reset();
                 }
                 break;
-            case u:
+
+            case s:
+                 if (armPivot.getCurrentAngle() > 74) {
+                armPivot.moveToAngle(73);
+                goIntake = 1;
+                goSlide = 1;
+                timer.reset();
+            } else {
+                armPivot.moveToAngle(73);
+                step = Steps.t;
+            }
+            break;
+            case t:
                 elapsedTime = timer.seconds();
                 if (goIntake == 1 && goSlide == 1 && elapsedTime < 1.5) {
                     slide.autoSlide(true, 0.4);
@@ -322,7 +322,7 @@ public class leftAuto extends OpMode {
         } else {
                     intake.stopIntake();
                     slide.stopSlide();
-                    step = Steps.v;
+                    step = Steps.u;
                     timer.reset();
                 }
 
