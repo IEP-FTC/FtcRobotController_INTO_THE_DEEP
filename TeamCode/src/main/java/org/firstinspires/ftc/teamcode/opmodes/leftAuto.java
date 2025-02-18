@@ -26,8 +26,8 @@ public class leftAuto extends OpMode {
     public static int B_ANGLE = 119;
     public static int ANGLE2 = 134;
     public static int GMOVESIDE = 1100;
-    public static int IROTATE = 200;
-    public static int MSTRAFE = 1550;
+    public static int IROTATE = 115;
+    public static int MSTRAFE = 1450;
     public static int NDRIVE = 700;
     public static int QSTRAFE = 1800;
     public double IMU_start;
@@ -126,10 +126,10 @@ public class leftAuto extends OpMode {
                 break;
 
             case e:
-                elapsedTime = timer.seconds();
-                if (elapsedTime > 0.5) {
-                    armPivot.moveToAngle(B_ANGLE);
-                }
+//                elapsedTime = timer.seconds();
+//                if (elapsedTime > 0.5) {
+//                    armPivot.moveToAngle(B_ANGLE);
+//                }
                 if (mecanumDrive.getDrivePosition() > drivePosition - C_DRIVE_FORWARD_TICKS) {
                     mecanumDrive.drive(-.5, 0, 0);
                 } else {
@@ -152,7 +152,7 @@ public class leftAuto extends OpMode {
 
 
             case g:
-                if (mecanumDrive.getDrivePosition() <= - GMOVESIDE) {
+                if (mecanumDrive.getDrivePosition() <= -GMOVESIDE) {
                     mecanumDrive.stop();
                     step = Steps.h;
                     drivePosition = mecanumDrive.getDrivePosition();
@@ -182,14 +182,14 @@ public class leftAuto extends OpMode {
                 }
                 break;
             case j:
-              if (armPivot.getCurrentAngle() < 73) {
-                  armPivot.moveToAngle(73.5);
+                if (armPivot.getCurrentAngle() < 73) {
+                    armPivot.moveToAngle(73.5);
                 } else {
-                  step = Steps.k;
-                  goIntake = 1;
-                  goSlide = 1;
-                  timer.reset();
-              }
+                    step = Steps.k;
+                    goIntake = 1;
+                    goSlide = 1;
+                    timer.reset();
+                }
                 break;
             case k:
 
@@ -198,7 +198,7 @@ public class leftAuto extends OpMode {
                 if (goIntake == 1 && goSlide == 1 && elapsedTime < 2) {
                     slide.autoSlide(true, 0.4);
                     intake.runIntake(true);
-                    mecanumDrive.drive(.1,0,0);
+                    mecanumDrive.drive(.1, 0, 0);
                 } else {
                     step = Steps.l;
                     intake.stopIntake();
@@ -213,7 +213,7 @@ public class leftAuto extends OpMode {
                 break;
 
             case l:
-                if (armPivot.getCurrentAngle() < 165){
+                if (armPivot.getCurrentAngle() < 165) {
                     armPivot.moveToAngle(165);
                 } else {
                     step = Steps.m;
@@ -237,7 +237,7 @@ public class leftAuto extends OpMode {
                 timer.reset();
                 goSlide = 1;
                 if (slide.getSlidePosition() <= 1750) {
-                   slide.runSlide(true,.8);
+                    slide.runSlide(true, .8);
                     armPivot.moveToAngle(165);
                     telemetry.addData("slide position", slide.getSlidePosition());
                     telemetry.update();
@@ -253,8 +253,8 @@ public class leftAuto extends OpMode {
                     goIntake = 0;
                 }
                 if (mecanumDrive.getDrivePosition() < drivePosition + NDRIVE) {
-                    mecanumDrive.drive(.2,0,0);
-                 } else {
+                    mecanumDrive.drive(.2, 0, 0);
+                } else {
                     mecanumDrive.stop();
                     timer.reset();
                 }
@@ -274,12 +274,12 @@ public class leftAuto extends OpMode {
 
             case p:
                 if (mecanumDrive.getDrivePosition() > drivePosition - 100) {
-                    mecanumDrive.drive(-.2,0,0);
+                    mecanumDrive.drive(-.2, 0, 0);
                 } else {
                     mecanumDrive.stop();
                 }
                 if (slide.getSlidePosition() >= 100) {
-                    slide.runSlide(false,.8);
+                    slide.runSlide(false, .8);
                 } else {
                     slide.stopSlide();
                     step = Steps.q;
@@ -287,8 +287,8 @@ public class leftAuto extends OpMode {
                 break;
 
             case q:
-                if(mecanumDrive.getDrivePosition() < drivePosition + QSTRAFE) {
-                    mecanumDrive.drive(0.05,.5,0);
+                if (mecanumDrive.getDrivePosition() < drivePosition + QSTRAFE) {
+                    mecanumDrive.drive(0, .5, 0);
                 } else {
                     mecanumDrive.stop();
                     step = Steps.r;
@@ -296,39 +296,41 @@ public class leftAuto extends OpMode {
                 break;
 
             case r:
-                if (mecanumDrive.getDrivePosition() < drivePosition + 400) {
-                    mecanumDrive.drive(.2,0,0);
-                    armPivot.moveToAngle(73);
+                if (armPivot.getCurrentAngle() > 76) {
+                    armPivot.moveToAngle(75);
                 } else {
-                    step = Steps.s;
-                    mecanumDrive.stop();
+                    armPivot.moveToAngle(75);
                     timer.reset();
+                    step = Steps.s;
                 }
                 break;
 
             case s:
-                 if (armPivot.getCurrentAngle() > 74) {
-                armPivot.moveToAngle(73);
-                goIntake = 1;
-                goSlide = 1;
-                timer.reset();
-            } else {
-                armPivot.moveToAngle(73);
-                step = Steps.t;
-            }
-            break;
-            case t:
-                elapsedTime = timer.seconds();
-                if (goIntake == 1 && goSlide == 1 && elapsedTime < 1.5) {
-                    slide.autoSlide(true, 0.4);
-                    intake.runIntake(true);
-                    mecanumDrive.drive(.15,0,0);
-        } else {
-                    intake.stopIntake();
-                    slide.stopSlide();
-                    step = Steps.u;
+
+                if (mecanumDrive.getDrivePosition() < drivePosition + 400) {
+                    mecanumDrive.drive(.2, 0, 0);
+                } else {
+                    mecanumDrive.stop();
                     timer.reset();
+                    goIntake = 1;
+                    goSlide = 1;
+                    step = Steps.t;
                 }
+                break;
+        }
+
+//            case t:
+//                elapsedTime = timer.seconds();
+//                if (goIntake == 1 && goSlide == 1 && elapsedTime < 1.5) {
+//                    slide.autoSlide(true, 0.4);
+//                    intake.runIntake(true);
+//                    mecanumDrive.drive(.15,0,0);
+//        } else {
+//                    intake.stopIntake();
+//                    slide.stopSlide();
+//                    step = Steps.u;
+//                    timer.reset();
+//                }
 
         armPivot.addTelemetry(telemetry);
         slide.addTelemetry(telemetry);
@@ -337,4 +339,3 @@ public class leftAuto extends OpMode {
 
         }
     }
-}

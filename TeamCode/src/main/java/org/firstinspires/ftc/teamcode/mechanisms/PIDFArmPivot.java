@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.libraries.PIDFController;
-
+@Config
 public class PIDFArmPivot {
     private DcMotor pivotLeft, pivotRight;
     private PIDFController pidfController;
