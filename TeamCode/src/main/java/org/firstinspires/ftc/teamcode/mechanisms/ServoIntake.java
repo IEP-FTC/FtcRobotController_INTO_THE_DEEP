@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ServoIntake {
 
-   private CRServo intakeServo;
+    private CRServo intakeServo;
 
     public void init(HardwareMap hardwareMap) {
 
@@ -34,5 +34,3 @@ public class ServoIntake {
     }
 
 }
-
-
