@@ -23,9 +23,10 @@ public class leftAuto extends OpMode {
     private DigitalChannel touchSensor;
 
     public static int C_DRIVE_FORWARD_TICKS =1450;
-    public static int B_ANGLE =119;
-    public static int ANGLE2=134;
+    public static int B_ANGLE = 119;
+    public static int ANGLE2 = 134;
     public static int GMOVESIDE = 1200;
+    public static int IROTATE;
     public double IMU_start;
     public double drivePosition;
     public int goIntake;
@@ -169,7 +170,7 @@ public class leftAuto extends OpMode {
                 break;
             case i:
                 //380 ticks is = 90 degrees for rotation
-                if (mecanumDrive.getDrivePosition() >= -380) {
+                if (mecanumDrive.getDrivePosition() >= -IROTATE) {
                     mecanumDrive.drive(0, 0, -.3);
                 } else {
                     mecanumDrive.stop();
