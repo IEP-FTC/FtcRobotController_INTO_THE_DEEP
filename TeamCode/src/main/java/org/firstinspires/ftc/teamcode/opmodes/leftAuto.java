@@ -6,7 +6,6 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
@@ -23,18 +22,18 @@ public class leftAuto extends OpMode {
     Slide slide = new Slide();
     private DigitalChannel touchSensor;
 
-    public static int DRIVE_FORWARD_TICKS=1450;
-    public static int ANGLE1=119;
+    public static int C_DRIVE_FORWARD_TICKS =1450;
+    public static int B_ANGLE =119;
     public static int ANGLE2=134;
     public double IMU_start;
     public double drivePosition;
     public int goIntake;
     public int goSlide;
     private enum Steps{
-        a,
-        b,
-        c,
-        d,
+        aResetArm,
+        bArmUp,
+        cDriveForward,
+        dArmUp,
         e,
         f,
         g,
@@ -58,7 +57,7 @@ public class leftAuto extends OpMode {
         y,
         z
     }
-    private Steps step = Steps.a;
+    private Steps step = Steps.aResetArm;
     private ElapsedTime timer;
     private double elapsedTime;
 
@@ -85,32 +84,32 @@ public class leftAuto extends OpMode {
         telemetry.addData("Step", step);
         telemetry.addData("drivePos", drivePosition);
         switch(step) {
-            case a:
+            case aResetArm:
                 armPivot.resetArmPosition();
                 elapsedTime = timer.seconds();
                 if (elapsedTime > .5) {
-                    step = Steps.b;
+                    step = Steps.bArmUp;
                     armPivot.resetEncoder();
                 }
                 break;
-            case b:
-                armPivot.moveToAngle(ANGLE1);
+            case bArmUp:
+                armPivot.moveToAngle(B_ANGLE);
                 if ((int) armPivot.getCurrentAngle() >= armPivot.getTargetAngle() - 2) {
-                    step = Steps.c;
+                    step = Steps.cDriveForward;
                     drivePosition = mecanumDrive.getDrivePosition();
                 }
                 break;
-            case c:
-                if (mecanumDrive.getDrivePosition() < drivePosition + DRIVE_FORWARD_TICKS) {
+            case cDriveForward:
+                if (mecanumDrive.getDrivePosition() < drivePosition + C_DRIVE_FORWARD_TICKS) {
                     mecanumDrive.drive(.5, 0, 0);
                 } else {
                     mecanumDrive.stop();
-                    step = Steps.d;
+                    step = Steps.dArmUp;
                     timer.reset();
                 }
                 break;
 
-            case d:
+            case dArmUp:
                 elapsedTime = timer.seconds();
                 armPivot.moveToAngle(ANGLE2);
                 if ((int) armPivot.getCurrentAngle() >= (int) armPivot.getTargetAngle() - 2 && elapsedTime > .5) {
@@ -124,9 +123,9 @@ public class leftAuto extends OpMode {
             case e:
                 elapsedTime = timer.seconds();
                 if (elapsedTime > 0.5) {
-                    armPivot.moveToAngle(ANGLE1);
+                    armPivot.moveToAngle(B_ANGLE);
                 }
-                if (mecanumDrive.getDrivePosition() > drivePosition - DRIVE_FORWARD_TICKS ) {
+                if (mecanumDrive.getDrivePosition() > drivePosition - C_DRIVE_FORWARD_TICKS) {
                     mecanumDrive.drive(-.5, 0, 0);
                 } else {
                     mecanumDrive.stop();
@@ -142,7 +141,7 @@ public class leftAuto extends OpMode {
                     step = Steps.g;
                     drivePosition = mecanumDrive.getDrivePosition();
                     // Only reset the timer once transitioning to the next step (g)
-                    timer.reset();  // Reset the timer here, as we're starting a new phase
+                    timer.reset();  // Reset the timer here, as we're starting aResetArm new phase
                 }
                 break;
 
