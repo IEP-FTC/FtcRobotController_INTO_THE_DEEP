@@ -17,19 +17,19 @@ public class ServoIntakeOpMode extends OpMode {
 
     @Override
     public void loop() {
-        if(gamepad1.left_stick_x > 0.05){
-            leftIntakePower = gamepad1.left_stick_x;
-        }
-        intake.moveLeftServo(leftIntakePower);
-
-        if(gamepad1.right_stick_x > 0.05){
-            rightIntakePower = gamepad1.right_stick_x;
-        }
-        intake.moveRightServo(rightIntakePower);
-
-        if(gamepad1.a){
-            intake.stop();
-        }
+//        if(gamepad1.left_stick_x > 0.05){
+//            leftIntakePower = gamepad1.left_stick_x;
+//        }
+//        intake.moveLeftServo(leftIntakePower);
+//
+//        if(gamepad1.right_stick_x > 0.05){
+//            rightIntakePower = gamepad1.right_stick_x;
+//        }
+//        intake.moveRightServo(rightIntakePower);
+//
+//        if(gamepad1.a){
+//            intake.stop();
+//        }
 
 
     }
