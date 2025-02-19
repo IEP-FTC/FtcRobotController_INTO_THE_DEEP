@@ -12,7 +12,7 @@ public class PIDFArmPivot {
     private PIDFController pidfController;
     public double currentAngle=65,targetA=65,power;
     public static double armRestAngle=65;
-    public static double kP=0.1, kI=0.01, kD=0.003, kF=0.15;
+    public static double kP=0.05, kI=0.2, kD=0.005, kF=0.13;
 
     public void init(HardwareMap HardMap) {
         pivotLeft = HardMap.get(DcMotor.class, "pivotLeft");
@@ -45,6 +45,22 @@ public class PIDFArmPivot {
         pidfController.setCoefficients(kP, kI, kD, kF);
         // Use PIDF to calculate power
         power = pidfController.update(targetA, currentAngle);
+
+
+        // Set power to motors
+        pivotLeft.setPower(power);
+        pivotRight.setPower(power);
+
+    }
+
+    public void moveToAngle(double targetAngle,Telemetry telemetry) {
+        targetA = targetAngle;
+        // Get the current position of the arm
+        currentAngle = ticksToArmDegrees(pivotLeft.getCurrentPosition())+armRestAngle;
+        //For tuning purposes, update coeficients
+        pidfController.setCoefficients(kP, kI, kD, kF);
+        // Use PIDF to calculate power
+        power = pidfController.update(targetA, currentAngle,telemetry);
 
 
         // Set power to motors
