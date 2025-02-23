@@ -142,7 +142,7 @@ public class leftAuto extends OpMode {
 //
             case f:
                 armPivot.moveToAngle(armPivot.armRestAngle);
-                if ((int) armPivot.getCurrentAngle() <= (int) armPivot.getTargetAngle() + 2) {
+                if ((int) armPivot.getCurrentAngle() <= (int) armPivot.getTargetAngle() + 3) {
                     step = Steps.g;
                     drivePosition = mecanumDrive.getDrivePosition();
                     // Only reset the timer once transitioning to the next step (g)

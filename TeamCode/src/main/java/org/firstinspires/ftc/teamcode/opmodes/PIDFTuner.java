@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.PIDFArmPivot;
 import org.firstinspires.ftc.teamcode.mechanisms.Slide;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
-
+@Config
 @TeleOp
 public class PIDFTuner extends OpMode {
     public static int PIVOT_ANGLE = 120;
@@ -47,16 +47,16 @@ public class PIDFTuner extends OpMode {
         }
 
         if (toggleState) {
-            armPivot.moveToAngle(PIVOT_ANGLE);
+            armPivot.moveToAngle(PIVOT_ANGLE, telemetry);
 
 
         } else {
-            armPivot.moveToAngle(armPivot.armRestAngle);
+            armPivot.moveToAngle(armPivot.armRestAngle, telemetry);
 
         }
 
 
-        //armPivot.addTelemetry(telemetry);
+        armPivot.addTelemetry(telemetry);
 
         if(abs(gamepad2.left_stick_y)>abs(gamepad2.left_stick_x)){
             mecanumDrive.pidDrive(-gamepad2.left_stick_y, 0, 0);
@@ -68,7 +68,7 @@ public class PIDFTuner extends OpMode {
         mecanumDrive.addTelemetry(telemetry);
 
 
-        telemetry.update();
+        //telemetry.update();
     }
 }
 

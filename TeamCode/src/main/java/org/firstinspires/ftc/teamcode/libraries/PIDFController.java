@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.libraries;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class PIDFController {
     private double kP, kI, kD, kF;
     private final double minIntegral=-1, maxIntegral = 1;
@@ -57,9 +59,42 @@ public class PIDFController {
         double feedforward = kF * Math.cos(Math.toRadians(currentAngle)-(Math.PI/2));
 
         double output = proportional + integral + derivative + feedforward;
+
         lastError = error;
         timer.reset();
 
+        output = Math.max(-1, Math.min(1, output));
+        return output;
+    }
+
+    public double update(double targetAngle, double currentAngle, Telemetry telemetry){
+        double error = targetAngle - currentAngle;
+        double elapsedTime = timer.seconds();
+        //P
+        double proportional = kP* error;
+        if(proportional>1){proportional=1;}
+        if(proportional<-1){proportional=-1;}
+        //I
+        integralSum += error * elapsedTime;
+        if (integralSum>maxIntegral){integralSum=maxIntegral;}
+        if (integralSum<minIntegral){integralSum=minIntegral;}
+        if (Math.abs(error) < 0.01) { // Example threshold
+            integralSum = 0;
+        }
+        double integral = kI *integralSum;
+        //D
+        double derivative = kD * (error - lastError) / elapsedTime;
+        //F
+        double feedforward = kF * Math.cos(Math.toRadians(currentAngle)-(Math.PI/2));
+
+        double output = proportional + integral + derivative + feedforward;
+        telemetry.addData("P", proportional);
+        telemetry.addData("I", integral);
+        telemetry.addData("D", derivative);
+        telemetry.addData("F", feedforward);
+        lastError = error;
+        timer.reset();
+        telemetry.update();
         output = Math.max(-1, Math.min(1, output));
         return output;
     }
