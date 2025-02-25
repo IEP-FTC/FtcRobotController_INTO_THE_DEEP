@@ -37,7 +37,6 @@ public class ServoGripper {
 
     public void moveRightServo(double position){
         intakeServoRight.setPosition(position);
-
     }
 
 
