@@ -8,6 +8,7 @@ public class ServoIntakeTwo extends OpMode {
     ServoGripperTwo gripper = new ServoGripperTwo();
     double leftIntakePower;
     double rightIntakePower;
+    double rotateIntakePower;
     @Override
     public void init() {
         gripper.init(hardwareMap);
@@ -28,6 +29,14 @@ public class ServoIntakeTwo extends OpMode {
         if(gamepad1.a){
             gripper.stop();
         }
+
+        if(gamepad1.dpad_down){
+            rotateIntakePower = -0.5;
+        }
+        if(gamepad1.dpad_up){
+            rotateIntakePower = 0.5;
+        }
+        gripper.moveRotateServo(rotateIntakePower);
 
         }
 }

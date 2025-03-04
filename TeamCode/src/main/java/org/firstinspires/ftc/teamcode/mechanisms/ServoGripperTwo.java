@@ -7,10 +7,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ServoGripperTwo {
     private CRServo servoLeft;
     private CRServo servoRight;
+    private CRServo servoRotate;
 
     public void init(HardwareMap hardwareMap) {
         servoLeft = hardwareMap.get(CRServo.class, "servoLeft");
         servoRight = hardwareMap.get(CRServo.class, "servoRight");
+        servoRotate = hardwareMap.get(CRServo.class, "servoRotate");
 
     }
     public void moveLeftServo(double position){
@@ -19,6 +21,10 @@ public class ServoGripperTwo {
 
     public void moveRightServo(double position){
         servoRight.setPower(position);
+    }
+
+    public void moveRotateServo(double position){
+        servoRotate.setPower(position);
     }
 
     public void stop(){
