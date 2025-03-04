@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.firstinspires.ftc.teamcode.mechanisms.ServoGripperTwo;
+@TeleOp
 
 public class ServoIntakeTwo extends OpMode {
 
@@ -9,6 +12,7 @@ public class ServoIntakeTwo extends OpMode {
     double leftIntakePower;
     double rightIntakePower;
     double rotateIntakePower;
+
     @Override
     public void init() {
         gripper.init(hardwareMap);
@@ -37,6 +41,5 @@ public class ServoIntakeTwo extends OpMode {
             rotateIntakePower = 0.5;
         }
         gripper.moveRotateServo(rotateIntakePower);
-
         }
 }
