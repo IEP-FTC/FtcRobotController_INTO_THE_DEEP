@@ -20,16 +20,16 @@ public class ServoIntakeTwo extends OpMode {
 
     @Override
     public void loop() {
-        if(gamepad1.left_stick_x < -0.05){
+        if(gamepad1.left_stick_x < -0.1){
            leftIntakePower = gamepad1.left_stick_x;
-       } else if (gamepad1.left_stick_x > 0.05){
+       } else if (gamepad1.left_stick_x > 0.1){
             leftIntakePower = gamepad1.left_stick_x;
         }
         gripper.moveLeftServo(leftIntakePower);
 
-       if(gamepad1.right_stick_x > 0.05){
+       if(gamepad1.right_stick_x > 0.1){
            rightIntakePower = gamepad1.right_stick_x;
-        } else if (gamepad1.right_stick_x < -0.05){
+        } else if (gamepad1.right_stick_x < -0.1){
            rightIntakePower = gamepad1.right_stick_x;
        }
        gripper.moveRightServo(rightIntakePower);
