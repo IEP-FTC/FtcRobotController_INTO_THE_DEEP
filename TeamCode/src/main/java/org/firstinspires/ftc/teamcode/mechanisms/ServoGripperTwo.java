@@ -27,8 +27,8 @@ public class ServoGripperTwo {
         servoRight.setPower(position);
     }
 
-    public void moveRotateServo(double position){
-        servoRotate.setPower(position);
+    public void moveRotateServo(double power){
+        servoRotate.setPower(power);
     }
 
     public void stop(){
