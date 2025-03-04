@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -13,6 +14,9 @@ public class ServoGripperTwo {
         servoLeft = hardwareMap.get(CRServo.class, "servoLeft");
         servoRight = hardwareMap.get(CRServo.class, "servoRight");
         servoRotate = hardwareMap.get(CRServo.class, "servoRotate");
+        servoRight.setDirection(CRServo.Direction.REVERSE);
+        servoLeft.setDirection(CRServo.Direction.REVERSE);
+
 
     }
     public void moveLeftServo(double position){
