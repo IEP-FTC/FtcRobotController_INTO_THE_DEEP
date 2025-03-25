@@ -46,7 +46,7 @@ public class ServoIntakeTwo extends OpMode {
             rotateIntakePower = -0.5;
         } else if (gamepad1.dpad_up){
             rotateIntakePower = 0.5;
-        } else if(gamepad1.y){
+        } else if (gamepad1.y){
             rotateIntakePower = 0;
         } else {
             rotateIntakePower = 0;
