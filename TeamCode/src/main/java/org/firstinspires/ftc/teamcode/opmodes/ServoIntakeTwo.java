@@ -42,11 +42,11 @@ public class ServoIntakeTwo extends OpMode {
             gripper.stop();
         }
 
-        if(gamepad1.y){
+        if(gamepad1.dpad_down){
             rotateIntakePower = -0.5;
-        }else if(gamepad1.x){
+        } else if (gamepad1.dpad_up){
             rotateIntakePower = 0.5;
-        }else{
+        } else {
             rotateIntakePower = 0;
         }
         gripper.moveRotateServo(rotateIntakePower);
